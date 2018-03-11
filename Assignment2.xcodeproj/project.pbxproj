@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A543B8DA2055EAFB00ECE7F8 /* maze.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A543B8D62055EAFA00ECE7F8 /* maze.cpp */; };
+		A543B8DB2055EAFB00ECE7F8 /* DisjointSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A543B8D72055EAFB00ECE7F8 /* DisjointSet.cpp */; };
 		DBFD7CC920474E5600A6E2C9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFD7CC820474E5600A6E2C9 /* AppDelegate.m */; };
 		DBFD7CCC20474E5600A6E2C9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFD7CCB20474E5600A6E2C9 /* ViewController.m */; };
 		DBFD7CCF20474E5600A6E2C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBFD7CCD20474E5600A6E2C9 /* Main.storyboard */; };
@@ -16,6 +18,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A543B8D62055EAFA00ECE7F8 /* maze.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = maze.cpp; sourceTree = "<group>"; };
+		A543B8D72055EAFB00ECE7F8 /* DisjointSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DisjointSet.cpp; sourceTree = "<group>"; };
+		A543B8D82055EAFB00ECE7F8 /* DisjointSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisjointSet.h; sourceTree = "<group>"; };
+		A543B8D92055EAFB00ECE7F8 /* maze.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = maze.h; sourceTree = "<group>"; };
 		DBFD7CC420474E5600A6E2C9 /* Assignment2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Assignment2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBFD7CC720474E5600A6E2C9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DBFD7CC820474E5600A6E2C9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -58,6 +64,10 @@
 		DBFD7CC620474E5600A6E2C9 /* Assignment2 */ = {
 			isa = PBXGroup;
 			children = (
+				A543B8D72055EAFB00ECE7F8 /* DisjointSet.cpp */,
+				A543B8D82055EAFB00ECE7F8 /* DisjointSet.h */,
+				A543B8D62055EAFA00ECE7F8 /* maze.cpp */,
+				A543B8D92055EAFB00ECE7F8 /* maze.h */,
 				DBFD7CC720474E5600A6E2C9 /* AppDelegate.h */,
 				DBFD7CC820474E5600A6E2C9 /* AppDelegate.m */,
 				DBFD7CCA20474E5600A6E2C9 /* ViewController.h */,
@@ -144,7 +154,9 @@
 			files = (
 				DBFD7CCC20474E5600A6E2C9 /* ViewController.m in Sources */,
 				DBFD7CD720474E5600A6E2C9 /* main.m in Sources */,
+				A543B8DA2055EAFB00ECE7F8 /* maze.cpp in Sources */,
 				DBFD7CC920474E5600A6E2C9 /* AppDelegate.m in Sources */,
+				A543B8DB2055EAFB00ECE7F8 /* DisjointSet.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
