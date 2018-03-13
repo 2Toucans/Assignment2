@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V7m-aQ-9JQ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V7m-aQ-9JQ">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,15 +17,35 @@
                     <glkView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" enableSetNeedsDisplay="NO" id="9ZT-KB-0n4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view alpha="0.5" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b0L-Q5-DMp">
+                                <rect key="frame" x="16" y="173" width="343" height="322"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="zcQ-Y2-2tJ"/>
                         <connections>
                             <outlet property="delegate" destination="V7m-aQ-9JQ" id="bS2-ju-EOJ"/>
+                            <outletCollection property="gestureRecognizers" destination="0RE-20-tpV" appends="YES" id="pmb-pm-deo"/>
+                            <outletCollection property="gestureRecognizers" destination="y0b-h8-2aE" appends="YES" id="k0v-34-Q8o"/>
                         </connections>
                     </glkView>
                 </glkViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xnK-i6-WYF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="0RE-20-tpV">
+                    <connections>
+                        <action selector="panGesture:" destination="V7m-aQ-9JQ" id="hMa-r2-HBt"/>
+                    </connections>
+                </panGestureRecognizer>
+                <tapGestureRecognizer numberOfTapsRequired="2" numberOfTouchesRequired="2" id="y0b-h8-2aE">
+                    <connections>
+                        <action selector="doubleTap:" destination="V7m-aQ-9JQ" id="xO5-W7-jBT"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="161" y="98"/>
+            <point key="canvasLocation" x="160.80000000000001" y="97.601199400299862"/>
         </scene>
     </scenes>
 </document>

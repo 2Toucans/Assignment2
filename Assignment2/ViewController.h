@@ -7,6 +7,7 @@
 //
 
 #import <GLKit/GLKit.h>
+#import "Game.h"
 
 @interface ViewController : GLKViewController
 

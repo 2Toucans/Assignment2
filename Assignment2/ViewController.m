@@ -13,10 +13,15 @@
 @end
 
 @implementation ViewController
+{
+    CGPoint swipePos;
+    Game* game;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    game = [[Game alloc] init];
 }
 
 
@@ -24,6 +29,27 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (IBAction)panGesture:(UIPanGestureRecognizer *)sender
+{
+    if(sender.state == UIGestureRecognizerStateBegan)
+    {
+        swipePos = CGPointZero;
+    }
+    
+    CGPoint point = [sender translationInView:self.view];
+    //translate point-swipe
+    swipePos = point;
+    
+}
+- (IBAction)doubleTap:(id)sender
+{
+    //trigger console show
+    //tell game to update map
+}
 
+- (void) update
+{
+    [game update];
+}
 
 @end
