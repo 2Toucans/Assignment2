@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "Renderer.h"
 
 @interface ViewController ()
 
@@ -17,13 +18,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    GLKView* view = (GLKView *) self.view;
+    [Renderer setup:view];
+    
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    [Renderer close];
 }
 
+- (void)glkView:(GLKView*)view drawInRect:(CGRect)rect {
+    [Renderer draw:rect];
+}
 
 @end
