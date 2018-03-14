@@ -17,10 +17,7 @@
 @property float* texCoords;
 @property int* indices;
 @property int numIndices;
-@property float x;
-@property float y;
-@property float z;
-@property GLKMatrix4 rotation;
+@property GLKMatrix4 position;
 
 @end
 

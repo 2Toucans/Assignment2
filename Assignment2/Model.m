@@ -11,5 +11,5 @@
 
 @implementation Model
 
-@synthesize vertices, normals, texCoords, indices, numIndices, x, y, z;
+@synthesize vertices, normals, texCoords, indices, numIndices, position;
 @end

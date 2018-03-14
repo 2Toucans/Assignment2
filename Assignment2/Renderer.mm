@@ -32,11 +32,12 @@ GLESRenderer glesRenderer;
 GLuint program;
 std::chrono::time_point<std::chrono::steady_clock> prevFrameTime;
 
-Model* cube;
+NSMutableDictionary* models;
+NSMutableArray* textures;
 
-GLKMatrix4 mvpMatrix;
 GLKMatrix3 normalMatrix;
 GLKMatrix4 perspectiveMatrix;
+GLKMatrix4 cameraMatrix;
 
 float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
 
@@ -75,7 +76,12 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
     glEnable(GL_DEPTH_TEST);
     prevFrameTime = std::chrono::steady_clock::now();
     
+    Model* cube;
     cube = [[Model alloc] init];
+    models = [[NSMutableDictionary alloc] init];
+    textures = [[NSMutableArray alloc] init];
+    cameraMatrix = GLKMatrix4Identity;
+    
     float* vertices;
     float* normals;
     float* texCoords;
@@ -85,11 +91,23 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
     [cube setNormals:normals];
     [cube setTexCoords:texCoords];
     [cube setIndices:indices];
-    [cube setRotation:GLKMatrix4Identity];
-    cube.x = 0;
-    cube.y = 0;
-    cube.z = -5;
-    cube.rotation = GLKMatrix4Identity;
+    [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, 0, 0, 0)];
+    
+    [self addModel:cube texture:@"test"];
+    
+    cube = [[Model alloc] init];
+    [cube setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices))];
+    [cube setVertices:vertices];
+    [cube setNormals:normals];
+    [cube setTexCoords:texCoords];
+    [cube setIndices:indices];
+    [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, 0, 1.2, 0)];
+    
+    [self addModel:cube texture:@"test"];
+    
+    [Renderer moveCamera:0 y:1 z:4];
+    [Renderer rotateCamera:0.24 x:1 y:0 z:0];
+    
 }
 
 + (void)close {
@@ -97,36 +115,58 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
 }
 
 + (void)draw: (CGRect)drawRect {
-    mvpMatrix = GLKMatrix4Translate(GLKMatrix4Identity, cube.x, cube.y, cube.z);
-    mvpMatrix = GLKMatrix4Multiply(mvpMatrix, cube.rotation);
-    normalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(mvpMatrix), NULL);
-    
-    float aspect = (float)view.drawableWidth / (float)view.drawableHeight;
-    perspectiveMatrix = GLKMatrix4MakePerspective(60.0f * M_PI / 180.0f, aspect, 1.0f, 20.0f);
-    
-    mvpMatrix = GLKMatrix4Multiply(perspectiveMatrix, mvpMatrix);
-
-    glUniformMatrix4fv(uniforms[UNIFORM_MVP_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
-    glUniformMatrix3fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, normalMatrix.m);
-    glUniform1i(uniforms[UNIFORM_PASS], false);
-    glUniform1i(uniforms[UNIFORM_SHADEINFRAG], true);
-    
-    glViewport(0, 0, (int)view.drawableWidth, (int)view.drawableHeight);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glUseProgram(program);
-    
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), cube.vertices);
-    glEnableVertexAttribArray(0);
-    glVertexAttrib4f(1, 0.1f, 0.97f, 0.3f, 1.0f);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), cube.normals);
-    glEnableVertexAttribArray(2);
-    glUniformMatrix4fv(uniforms[UNIFORM_MVP_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
-    glDrawElements(GL_TRIANGLES, cube.numIndices, GL_UNSIGNED_INT, cube.indices);
+    [models enumerateKeysAndObjectsUsingBlock:^(NSString* texture, NSMutableArray* models, BOOL* stop) {
+        for (int i = 0; i < [models count]; i++) {
+            Model* m = models[i];
+            
+            GLKMatrix4 mvpMatrix = m.position;
+            normalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(mvpMatrix), NULL);
+            
+            float aspect = (float)view.drawableWidth / (float)view.drawableHeight;
+            perspectiveMatrix = GLKMatrix4MakePerspective(60.0f * M_PI / 180.0f, aspect, 1.0f, 20.0f);
+            
+            mvpMatrix = GLKMatrix4Multiply(GLKMatrix4Invert(cameraMatrix, FALSE), mvpMatrix);
+            mvpMatrix = GLKMatrix4Multiply(perspectiveMatrix, mvpMatrix);
+
+            glUniformMatrix4fv(uniforms[UNIFORM_MVP_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
+            glUniformMatrix3fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, normalMatrix.m);
+            glUniform1i(uniforms[UNIFORM_PASS], false);
+            glUniform1i(uniforms[UNIFORM_SHADEINFRAG], true);
+            
+            glViewport(0, 0, (int)view.drawableWidth, (int)view.drawableHeight);
+            glUseProgram(program);
+            
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), m.vertices);
+            glEnableVertexAttribArray(0);
+            glVertexAttrib4f(1, 0.1f, 0.97f, 0.3f, 1.0f);
+            glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), m.normals);
+            glEnableVertexAttribArray(2);
+            glUniformMatrix4fv(uniforms[UNIFORM_MVP_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
+            glDrawElements(GL_TRIANGLES, m.numIndices, GL_UNSIGNED_INT, m.indices);
+        }
+    }];
 }
 
-+ (void)addModel: (Model*)model {
-    
++ (void)addModel: (Model*)model texture:(NSString*)texture {
+    if ([models objectForKey:texture] == nil) {
+        [models setObject:[[NSMutableArray alloc] init] forKey:texture];
+    }
+    [models[texture] addObject:model];
 }
+
++ (void)moveCamera:(float)x y:(float)y z:(float)z {
+    cameraMatrix = GLKMatrix4Multiply(GLKMatrix4Translate(GLKMatrix4Identity, x, y, z), cameraMatrix);
+}
+
++ (void)moveCameraRelative:(float)x y:(float)y z:(float)z {
+    cameraMatrix = GLKMatrix4Translate(cameraMatrix, x, y, z);
+}
+
++ (void)rotateCamera:(float)angle x:(float)x y:(float)y z:(float)z {
+    cameraMatrix = GLKMatrix4Rotate(cameraMatrix, -angle, x, y, z);
+}
+
 + (bool)setupShaders {
     char *vShaderStr = glesRenderer.LoadShaderFile([[[NSBundle mainBundle] pathForResource: [[NSString stringWithUTF8String:"Shader.vsh"] stringByDeletingPathExtension] ofType:[[NSString stringWithUTF8String:"Shader.vsh"] pathExtension]] cStringUsingEncoding:1]);
     char *fShaderStr = glesRenderer.LoadShaderFile([[[NSBundle mainBundle] pathForResource: [[NSString stringWithUTF8String:"Shader.fsh"] stringByDeletingPathExtension] ofType:[[NSString stringWithUTF8String:"Shader.fsh"] pathExtension]] cStringUsingEncoding:1]);
