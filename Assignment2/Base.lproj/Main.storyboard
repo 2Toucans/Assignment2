@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V7m-aQ-9JQ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V7m-aQ-9JQ">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -30,6 +30,7 @@
                             <outlet property="delegate" destination="V7m-aQ-9JQ" id="bS2-ju-EOJ"/>
                             <outletCollection property="gestureRecognizers" destination="0RE-20-tpV" appends="YES" id="pmb-pm-deo"/>
                             <outletCollection property="gestureRecognizers" destination="y0b-h8-2aE" appends="YES" id="k0v-34-Q8o"/>
+                            <outletCollection property="gestureRecognizers" destination="wtM-7w-GqF" appends="YES" id="chi-Vq-hbT"/>
                         </connections>
                     </glkView>
                 </glkViewController>
@@ -44,6 +45,11 @@
                         <action selector="doubleTap:" destination="V7m-aQ-9JQ" id="xO5-W7-jBT"/>
                     </connections>
                 </tapGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="wtM-7w-GqF" userLabel="SinglePan Gesture Recognizer">
+                    <connections>
+                        <action selector="rotateGesture:" destination="V7m-aQ-9JQ" id="LkL-1j-RY9"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="160.80000000000001" y="97.601199400299862"/>
         </scene>

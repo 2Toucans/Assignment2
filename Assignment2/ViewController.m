@@ -15,7 +15,7 @@
 
 @implementation ViewController
 {
-    CGPoint swipePos;
+    CGPoint swipePos, rotatePos;
     Game* game;
 }
 
@@ -41,10 +41,31 @@
     }
     
     CGPoint point = [sender translationInView:self.view];
-    //translate point-swipe
-    swipePos = point;
     
+    float x = point.x - swipePos.x;
+    float y = point.y - swipePos.y;
+    
+    [game move:x y:y];
+    
+    swipePos = point;
 }
+
+- (IBAction)rotateGesture:(UIPanGestureRecognizer *)sender
+{
+    if(sender.state == UIGestureRecognizerStateBegan)
+    {
+        rotatePos = CGPointZero;
+    }
+    
+    CGPoint point = [sender translationInView:self.view];
+    
+    float x = point.x - rotatePos.x;
+    
+    [game rotate:x];
+    
+    rotatePos = point;
+}
+
 - (IBAction)doubleTap:(id)sender
 {
     //trigger console show
