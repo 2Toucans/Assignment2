@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "Renderer.h"
 
 @interface ViewController ()
 
@@ -21,13 +22,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    GLKView* view = (GLKView *) self.view;
+    [Renderer setup:view];
+    
     game = [[Game alloc] init];
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    [Renderer close];
 }
 - (IBAction)panGesture:(UIPanGestureRecognizer *)sender
 {
@@ -50,6 +54,11 @@
 - (void) update
 {
     [game update];
+}
+
+- (void)glkView:(GLKView*)view drawInRect:(CGRect)rect
+{
+    [Renderer draw:rect];
 }
 
 @end
