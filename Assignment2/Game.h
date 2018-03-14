@@ -10,6 +10,7 @@
 #define Game_h
 
 #import <Foundation/Foundation.h>
+#include "Renderer.h"
 
 struct CPPMaze;
 
@@ -17,9 +18,14 @@ struct CPPMaze;
 {
     @private
     struct CPPMaze* cppMaze;
+    int rows, cols;
 }
 
 - (void)update;
+
+- (void)move:(float)x y:(float)y;
+
+- (void)rotate:(float)y;
 
 @end
 

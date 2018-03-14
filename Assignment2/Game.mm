@@ -14,15 +14,22 @@ struct CPPMaze {
     Maze maze;
 };
 
-enum Textures
+enum Texture
 {
-    both, none, leftRight, rightLeft
+    texWallBoth, texWallNone, texWallLeft, texWallRight, texPost, texTile
+};
+
+enum ModelType
+{
+    post, tile, vWallL, vWallR, hWallT, hWallB
 };
 
 @implementation Game
 {
-    //Renderer* renderer;
     std::chrono::time_point<std::chrono::steady_clock> lastTime;
+    
+    bool **vertWalls, **horizWalls;
+    float yRotate;
 }
 
 - (id)init
@@ -32,7 +39,12 @@ enum Textures
     {
         cppMaze = new CPPMaze;
         
-        //send renderer positions of all the tiles and walls
+        rows = 4;
+        cols = 4;
+        
+        [self populateWalls];
+        
+        [self setModels];
     }
     return self;
 }
@@ -44,64 +56,134 @@ enum Textures
     lastTime = currentTime;
     //deal with spinning cube rotation
     
-    
+    //deal with player movement
 }
 
-//make arrays to carry vertical and horizontal walls
-//make function to check walls on either side, return texture enum and
-//use switch instead of if statement
-- (void)setTexture
+- (void)move:(float)x y:(float)y
+{
+    [Renderer moveCamera:x y:0 z:y];
+}
+
+- (void)rotate:(float)y
+{
+    [Renderer rotateCamera:y/100 x:0 y:1 z:0];
+}
+
+- (void)populateWalls
+{
+    vertWalls = (bool**)calloc(rows, sizeof(bool*));
+    for (int i = 0; i < rows; i++) {
+        vertWalls[i] = (bool*)calloc(cols, sizeof(bool));
+        for(int j = 0; j < cols; j++) {
+            //check for walls and set true if wall
+        }
+    }
+}
+
+//Determines the parameters for the posts, tiles, and walls and sends them to the renderer
+- (void)setModels
 {
     for(float offX = 0; offX < cppMaze->maze.cols; offX += 1)
     {
         for(float offY = 0; offY < cppMaze->maze.rows; offY += 1)
         {
             //posts
-            //addModel(post, offX, offY, 0, texP)
+            [self makeModel:post x:offX y:offY z:0 t:texPost];
             
             //tiles
-            //addModel(tile, offX+0.5, offY+0.5, -1, texT)
+            [self makeModel:tile x:offX+0.5 y:offY+0.5 z:-1 t:texTile];
             
             //vertical walls
-            //if(vertWalls[offX][offY])
-                //Textures wallTex = whichTexture(true, offX, offY)
-                //addModel(vWall, offX, offY+0.5, 0, wallTex)
+            if(vertWalls[(int)offX][(int)offY])
+            {
+                Texture wallTex = [self whichTexture:true x:offX y:offY];
+                [self makeModel:vWallL x:offX-0.025 y:offY+0.5 z:0 t:wallTex];
+                
+                if(wallTex == texWallLeft)
+                    wallTex = texWallRight;
+                else if(wallTex == texWallRight)
+                    wallTex = texWallLeft;
+                
+                [self makeModel:vWallR x:offX+0.025 y:offY+0.5 z:0 t:wallTex];
+            }
             
             //horizontal walls
-            //if(horizWalls[offX][offY])
-                //wallTex = whichTexture(false, offX, offY)
-                //addModel(hWall, offX+0.5, offY, 0, wallTex)
+            if(horizWalls[(int)offX][(int)offY])
+            {
+                Texture wallTex = [self whichTexture:false x:offX y:offY];
+                [self makeModel:hWallT x:offX+0.5 y:offY-0.025 z:0 t:wallTex];
+                
+                if(wallTex == texWallLeft)
+                    wallTex = texWallRight;
+                else if(wallTex == texWallRight)
+                    wallTex = texWallLeft;
+                
+                [self makeModel:hWallB x:offX+0.5 y:offY+0.025 z:0 t:wallTex];
+            }
         }
         
         //missing row of posts
-        //addModel(post, offX, cppMaze->maze.rows, 0, texP)
+        [self makeModel:post x:offX y:cppMaze->maze.rows z:0 t:texPost];
         
         //missing row of horizontal walls
-        //if(horizWalls[offX][cppMaze->maze.rows])
-            //Textures wallTex = whichTexture(false, offX, cppMaze->maze.rows)
-            //addModel(hWall, offX, cppMaze->maze.rows, 0, wallTex)
+        if(horizWalls[(int)offX][cppMaze->maze.rows])
+        {
+            Texture wallTex = [self whichTexture:false x:offX y:cppMaze->maze.rows];
+            [self makeModel:hWallT x:offX y:cppMaze->maze.rows-0.025 z:0 t:wallTex];
+            
+            if(wallTex == texWallLeft)
+                wallTex = texWallRight;
+            else if(wallTex == texWallRight)
+                wallTex = texWallLeft;
+            
+            [self makeModel:hWallB x:offX y:cppMaze->maze.rows+0.025 z:0 t:wallTex];
+        }
     }
     
     for(int offY = 0; offY < cppMaze->maze.rows; offY++)
     {
         //missing column of posts
-        //addModel(post, cppMaze->maze.cols, offY, 0, texP)
+        [self makeModel:post x:cppMaze->maze.cols y:offY z:0 t:texPost];
         
         //missing column of vertical walls
-        //if(vertWalls[cppMaze->maze.cols][offY])
-            //Textures wallTex = whichTexture(true, cppMaze->maze.cols, offY)
-            //addModel(vWall, cppMaze->maze.cols, offY, 0, wallTex)
+        if(vertWalls[cppMaze->maze.cols][(int)offY])
+        {
+            Texture wallTex = [self whichTexture:true x:cppMaze->maze.cols y:offY];
+            [self makeModel:vWallL x:cppMaze->maze.cols-0.025 y:offY z:0 t:wallTex];
+            
+            if(wallTex == texWallLeft)
+                wallTex = texWallRight;
+            else if(wallTex == texWallRight)
+                wallTex = texWallLeft;
+            
+            [self makeModel:vWallR x:cppMaze->maze.cols+0.025 y:offY z:0 t:wallTex];
+        }
     }
     
     //missing bottom right post
-    //addModel(post, cppMaze->maze.cols, cppMaze->maze.rows, 0, texP)
+    [self makeModel:post x:cppMaze->maze.cols y:cppMaze->maze.rows z:0 t:texPost];
+}
+
+//Formats the model then sends the pieces to the corresponding arrays in the renderer
+- (void)makeModel:(ModelType)type x:(float)xPos y:(float)yPos z:(float)zPos t:(Texture)tex
+{
+    
 }
 
 //Determines which textures the wall should have based on surrounding
 //walls and its orientation
-- (Textures)whichTexture:(bool)vertical x:(float)xPos y:(float)yPos
+- (Texture)whichTexture:(bool)vertical x:(float)xPos y:(float)yPos
 {
-    return leftRight;
+    if(vertical)
+    {
+        
+    }
+    else
+    {
+        
+    }
+    
+    return texWallLeft;
 }
 
 //USE MAZE LIKE THIS:
@@ -109,30 +191,30 @@ enum Textures
 
 /*float cubeVerts[] =
  {
- -0.4f, -0.4f, -0.05f,
- -0.4f, -0.4f,  0.05f,
-  0.4f, -0.4f,  0.05f,
-  0.4f, -0.4f, -0.05f,
- -0.4f,  0.4f, -0.05f,
- -0.4f,  0.4f,  0.05f,
-  0.4f,  0.4f,  0.05f,
-  0.4f,  0.4f, -0.05f,
- -0.4f, -0.4f, -0.05f,
- -0.4f,  0.4f, -0.05f,
-  0.4f,  0.4f, -0.05f,
-  0.4f, -0.4f, -0.05f,
- -0.4f, -0.4f,  0.05f,
- -0.4f,  0.4f,  0.05f,
-  0.4f,  0.4f,  0.05f,
-  0.4f, -0.4f,  0.05f,
- -0.4f, -0.4f, -0.05f,
- -0.4f, -0.4f,  0.05f,
- -0.4f,  0.4f,  0.05f,
- -0.4f,  0.4f, -0.05f,
-  0.4f, -0.4f, -0.05f,
-  0.4f, -0.4f,  0.05f,
-  0.4f,  0.4f,  0.05f,
-  0.4f,  0.4f, -0.05f,
+ -0.4f, -0.4f, -0.025f,
+ -0.4f, -0.4f,  0.025f,
+  0.4f, -0.4f,  0.025f,
+  0.4f, -0.4f, -0.025f,
+ -0.4f,  0.4f, -0.025f,
+ -0.4f,  0.4f,  0.025f,
+  0.4f,  0.4f,  0.025f,
+  0.4f,  0.4f, -0.025f,
+ -0.4f, -0.4f, -0.025f,
+ -0.4f,  0.4f, -0.025f,
+  0.4f,  0.4f, -0.025f,
+  0.4f, -0.4f, -0.025f,
+ -0.4f, -0.4f,  0.025f,
+ -0.4f,  0.4f,  0.025f,
+  0.4f,  0.4f,  0.025f,
+  0.4f, -0.4f,  0.025f,
+ -0.4f, -0.4f, -0.025f,
+ -0.4f, -0.4f,  0.025f,
+ -0.4f,  0.4f,  0.025f,
+ -0.4f,  0.4f, -0.025f,
+  0.4f, -0.4f, -0.025f,
+  0.4f, -0.4f,  0.025f,
+  0.4f,  0.4f,  0.025f,
+  0.4f,  0.4f, -0.025f,
  };*/
 
 @end
