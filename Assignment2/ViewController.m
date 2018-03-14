@@ -66,6 +66,11 @@
     rotatePos = point;
 }
 
+- (IBAction)tap:(id)sender
+{
+    [game reset];
+}
+
 - (IBAction)doubleTap:(id)sender
 {
     //trigger console show

@@ -69,10 +69,15 @@ enum ModelType
     [Renderer rotateCamera:y/100 x:0 y:1 z:0];
 }
 
+- (void)reset
+{
+    //[Renderer setPosition:0 y:0 z:0] something like this
+}
+
 - (void)populateWalls
 {
-    vertWalls = (bool**)calloc(rows, sizeof(bool*));
-    for (int i = 0; i < rows; i++) {
+    vertWalls = (bool**)calloc(rows+1, sizeof(bool*));
+    for (int i = 0; i < rows+1; i++) {
         vertWalls[i] = (bool*)calloc(cols, sizeof(bool));
         for(int j = 0; j < cols; j++) {
             //check for walls and set true if wall
@@ -81,8 +86,8 @@ enum ModelType
     
     horizWalls = (bool**)calloc(rows, sizeof(bool*));
     for (int i = 0; i < rows; i++) {
-        horizWalls[i] = (bool*)calloc(cols, sizeof(bool));
-        for(int j = 0; j < cols; j++) {
+        horizWalls[i] = (bool*)calloc(cols+1, sizeof(bool));
+        for(int j = 0; j < cols+1; j++) {
             //check for walls and set true if wall
         }
     }

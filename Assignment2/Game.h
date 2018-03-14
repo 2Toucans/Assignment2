@@ -27,6 +27,8 @@ struct CPPMaze;
 
 - (void)rotate:(float)y;
 
+- (void)reset;
+
 @end
 
 #endif /* Game_h */
