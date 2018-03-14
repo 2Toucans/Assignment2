@@ -17,6 +17,7 @@ enum {
     UNIFORM_NORMAL_MATRIX,
     UNIFORM_PASS,
     UNIFORM_SHADEINFRAG,
+    UNIFORM_TEXTURE,
     NUM_UNIFORMS
 };
 
@@ -33,16 +34,16 @@ GLuint program;
 std::chrono::time_point<std::chrono::steady_clock> prevFrameTime;
 
 NSMutableDictionary* models;
-NSMutableArray* textures;
+NSMutableDictionary* textures;
 
 GLKMatrix3 normalMatrix;
 GLKMatrix4 perspectiveMatrix;
 GLKMatrix4 cameraMatrix;
-
 float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
 
 @interface Renderer ()
 + (bool)setupShaders;
++ (void)loadTexture: (NSString*)fileName;
 @end
 
 @implementation Renderer
@@ -79,7 +80,7 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
     Model* cube;
     cube = [[Model alloc] init];
     models = [[NSMutableDictionary alloc] init];
-    textures = [[NSMutableArray alloc] init];
+    textures = [[NSMutableDictionary alloc] init];
     cameraMatrix = GLKMatrix4Identity;
     
     float* vertices;
@@ -93,7 +94,7 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
     [cube setIndices:indices];
     [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, 0, 0, 0)];
     
-    [self addModel:cube texture:@"test"];
+    [self addModel:cube texture:@"crate.jpg"];
     
     cube = [[Model alloc] init];
     [cube setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices))];
@@ -103,7 +104,37 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
     [cube setIndices:indices];
     [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, 0, 1.2, 0)];
     
-    [self addModel:cube texture:@"test"];
+    [self addModel:cube texture:@"badcrate.png"];
+    
+    cube = [[Model alloc] init];
+    [cube setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices))];
+    [cube setVertices:vertices];
+    [cube setNormals:normals];
+    [cube setTexCoords:texCoords];
+    [cube setIndices:indices];
+    [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, 0, -1.2, 0)];
+    
+    [self addModel:cube texture:@"crate.jpg"];
+    
+    cube = [[Model alloc] init];
+    [cube setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices))];
+    [cube setVertices:vertices];
+    [cube setNormals:normals];
+    [cube setTexCoords:texCoords];
+    [cube setIndices:indices];
+    [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, -1.2, 0, 0)];
+    
+    [self addModel:cube texture:@"badcrate.png"];
+    
+    cube = [[Model alloc] init];
+    [cube setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices))];
+    [cube setVertices:vertices];
+    [cube setNormals:normals];
+    [cube setTexCoords:texCoords];
+    [cube setIndices:indices];
+    [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, 1.2, 0, 0)];
+    
+    [self addModel:cube texture:@"badcrate.png"];
     
     [Renderer moveCamera:0 y:1 z:4];
     [Renderer rotateCamera:0.24 x:1 y:0 z:0];
@@ -117,6 +148,8 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
 + (void)draw: (CGRect)drawRect {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     [models enumerateKeysAndObjectsUsingBlock:^(NSString* texture, NSMutableArray* models, BOOL* stop) {
+        glUniform1i(uniforms[UNIFORM_TEXTURE], (unsigned int)[textures[texture] intValue]);
+        
         for (int i = 0; i < [models count]; i++) {
             Model* m = models[i];
             
@@ -139,9 +172,11 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
             
             glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), m.vertices);
             glEnableVertexAttribArray(0);
-            glVertexAttrib4f(1, 0.1f, 0.97f, 0.3f, 1.0f);
+            glVertexAttrib4f(1, 1.0f, 1.0f, 1.0f, 1.0f);
             glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), m.normals);
             glEnableVertexAttribArray(2);
+            glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), m.texCoords);
+            glEnableVertexAttribArray(3);
             glUniformMatrix4fv(uniforms[UNIFORM_MVP_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
             glDrawElements(GL_TRIANGLES, m.numIndices, GL_UNSIGNED_INT, m.indices);
         }
@@ -151,6 +186,7 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
 + (void)addModel: (Model*)model texture:(NSString*)texture {
     if ([models objectForKey:texture] == nil) {
         [models setObject:[[NSMutableArray alloc] init] forKey:texture];
+        [Renderer loadTexture:texture];
     }
     [models[texture] addObject:model];
 }
@@ -177,8 +213,53 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
     
     uniforms[UNIFORM_MVP_MATRIX] = glGetUniformLocation(program, "modelViewProjectionMatrix");
     uniforms[UNIFORM_NORMAL_MATRIX] = glGetUniformLocation(program, "normalMatrix");
+    uniforms[UNIFORM_PASS] = glGetUniformLocation(program, "passThrough");
+    uniforms[UNIFORM_SHADEINFRAG] = glGetUniformLocation(program, "shadeInFrag");
+    uniforms[UNIFORM_TEXTURE] = glGetUniformLocation(program, "texSampler");
     
     return true;
+}
+
++ (void)loadTexture:(NSString *)fileName {
+    CGImageRef img = [UIImage imageNamed:fileName].CGImage;
+    if (!img) {
+        NSLog(@"Failed to load image: %@", fileName);
+        NSException *contextFailedException = [NSException
+                                               exceptionWithName:@"GLESFailureException"
+                                               reason:@"Failed to load image"
+                                               userInfo: nil];
+        @throw contextFailedException;
+    }
+    
+    size_t w = CGImageGetWidth(img);
+    size_t h = CGImageGetHeight(img);
+    
+    GLubyte* spriteData = (GLubyte *)calloc(w * h * 4, sizeof(GLubyte));
+    
+    CGContextRef spriteContext = CGBitmapContextCreate(spriteData, w, h, 8, w*4, CGImageGetColorSpace(img), kCGImageAlphaPremultipliedLast);
+    
+    CGContextDrawImage(spriteContext, CGRectMake(0, 0, w, h), img);
+    
+    CGContextRelease(spriteContext);
+    
+    GLuint texName;
+    glGenTextures(1, &texName);
+    
+    int val = (int)[textures count];
+    
+    glActiveTexture(GL_TEXTURE0 + val);
+    glBindTexture(GL_TEXTURE_2D, texName);
+    
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)w, (int)h, 0, GL_RGBA, GL_UNSIGNED_BYTE, spriteData);
+    free(spriteData);
+    
+    
+    NSLog(@"Texture %@ loaded into texture %d", fileName, val);
+    
+    [textures setObject:[NSNumber numberWithInt:val] forKey:fileName];
+    
 }
 
 @end
