@@ -42,9 +42,9 @@ enum ModelType
         rows = 4;
         cols = 4;
         
-        [self populateWalls];
+        //[self populateWalls];
         
-        [self setModels];
+        //[self setModels];
     }
     return self;
 }
@@ -61,7 +61,7 @@ enum ModelType
 
 - (void)move:(float)x y:(float)y
 {
-    [Renderer moveCamera:x y:0 z:y];
+    [Renderer moveCamera:x/100 y:0 z:y/100];
 }
 
 - (void)rotate:(float)y
@@ -69,7 +69,7 @@ enum ModelType
     [Renderer rotateCamera:y/100 x:0 y:1 z:0];
 }
 
-- (void)populateWalls
+/*- (void)populateWalls
 {
     vertWalls = (bool**)calloc(rows, sizeof(bool*));
     for (int i = 0; i < rows; i++) {
@@ -162,7 +162,7 @@ enum ModelType
     
     //missing bottom right post
     [self makeModel:post x:cppMaze->maze.cols y:cppMaze->maze.rows z:0 t:texPost];
-}
+}*/
 
 //Formats the model then sends the pieces to the corresponding arrays in the renderer
 - (void)makeModel:(ModelType)type x:(float)xPos y:(float)yPos z:(float)zPos t:(Texture)tex

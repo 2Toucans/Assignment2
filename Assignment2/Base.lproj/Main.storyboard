@@ -35,7 +35,7 @@
                     </glkView>
                 </glkViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xnK-i6-WYF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="0RE-20-tpV">
+                <panGestureRecognizer minimumNumberOfTouches="1" maximumNumberOfTouches="1" id="0RE-20-tpV">
                     <connections>
                         <action selector="panGesture:" destination="V7m-aQ-9JQ" id="hMa-r2-HBt"/>
                     </connections>
@@ -45,7 +45,7 @@
                         <action selector="doubleTap:" destination="V7m-aQ-9JQ" id="xO5-W7-jBT"/>
                     </connections>
                 </tapGestureRecognizer>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="wtM-7w-GqF" userLabel="SinglePan Gesture Recognizer">
+                <panGestureRecognizer minimumNumberOfTouches="2" maximumNumberOfTouches="2" id="wtM-7w-GqF" userLabel="DoublePan Gesture Recognizer">
                     <connections>
                         <action selector="rotateGesture:" destination="V7m-aQ-9JQ" id="LkL-1j-RY9"/>
                     </connections>
