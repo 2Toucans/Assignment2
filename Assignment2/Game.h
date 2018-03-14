@@ -19,7 +19,7 @@ struct CPPMaze;
     struct CPPMaze* cppMaze;
 }
 
-
+- (void)update;
 
 @end
 

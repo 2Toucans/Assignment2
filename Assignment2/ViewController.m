@@ -14,13 +14,18 @@
 @end
 
 @implementation ViewController
+{
+    CGPoint swipePos;
+    Game* game;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
     GLKView* view = (GLKView *) self.view;
     [Renderer setup:view];
     
+    game = [[Game alloc] init];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -28,8 +33,31 @@
     // Dispose of any resources that can be recreated.
     [Renderer close];
 }
+- (IBAction)panGesture:(UIPanGestureRecognizer *)sender
+{
+    if(sender.state == UIGestureRecognizerStateBegan)
+    {
+        swipePos = CGPointZero;
+    }
+    
+    CGPoint point = [sender translationInView:self.view];
+    //translate point-swipe
+    swipePos = point;
+    
+}
+- (IBAction)doubleTap:(id)sender
+{
+    //trigger console show
+    //tell game to update map
+}
 
-- (void)glkView:(GLKView*)view drawInRect:(CGRect)rect {
+- (void) update
+{
+    [game update];
+}
+
+- (void)glkView:(GLKView*)view drawInRect:(CGRect)rect
+{
     [Renderer draw:rect];
 }
 
