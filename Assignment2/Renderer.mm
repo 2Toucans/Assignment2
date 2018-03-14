@@ -14,6 +14,7 @@
 
 enum {
     UNIFORM_MVP_MATRIX,
+    UNIFORM_MV_MATRIX,
     UNIFORM_NORMAL_MATRIX,
     UNIFORM_PASS,
     UNIFORM_SHADEINFRAG,
@@ -35,6 +36,7 @@ std::chrono::time_point<std::chrono::steady_clock> prevFrameTime;
 
 NSMutableDictionary* models;
 NSMutableDictionary* textures;
+NSMutableArray* lights;
 
 GLKMatrix3 normalMatrix;
 GLKMatrix4 perspectiveMatrix;
@@ -81,6 +83,7 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
     cube = [[Model alloc] init];
     models = [[NSMutableDictionary alloc] init];
     textures = [[NSMutableDictionary alloc] init];
+    lights = [[NSMutableArray alloc] init];
     cameraMatrix = GLKMatrix4Identity;
     
     float* vertices;
@@ -136,6 +139,29 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
     
     [self addModel:cube texture:@"badcrate.png"];
     
+    Light* light = (Light*)malloc(sizeof(Light));
+    light->color = GLKVector3Make(1.0, 1.0, 0.8);
+    light->direction = GLKVector3Make(0.0, -1.0, -0.3);
+    light->type = DIRECTIONAL_LIGHT;
+    
+    [self addLight:light];
+    
+    light = (Light*)malloc(sizeof(Light));
+    light->color = GLKVector3Make(0.0, 0.25, 0.7);
+    light->direction = GLKVector3Make(-0.5, 0.3, -1.0);
+    light->type = DIRECTIONAL_LIGHT;
+    
+    [self addLight:light];
+    
+    light = (Light*)malloc(sizeof(Light));
+    light->color = GLKVector3Make(1.5, 1.5, 1.5);
+    light->direction = GLKVector3Make(0.0, 0.0, -1.0);
+    light->position = GLKVector3Make(0.0, 0.0, 2.0);
+    light->size = 0.5;
+    light->type = SPOT_LIGHT;
+    
+    [self addLight:light];
+    
     [Renderer moveCamera:0 y:1 z:4];
     [Renderer rotateCamera:0.24 x:1 y:0 z:0];
     
@@ -146,7 +172,23 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
 }
 
 + (void)draw: (CGRect)drawRect {
+    
+    // Set up the light uniforms
+    for (int i = 0; i < [lights count]; i++) {
+        Light* light;
+        [lights[i] getValue:&light];
+        glUniform1i(glGetUniformLocation(program, [[NSString stringWithFormat:@"lights[%d]%@", i, @".type"] UTF8String]), light->type);
+        glUniform3f(glGetUniformLocation(program, [[NSString stringWithFormat:@"lights[%d]%@", i, @".color"] UTF8String]), light->color.r, light->color.g, light->color.b);
+        glUniform3f(glGetUniformLocation(program, [[NSString stringWithFormat:@"lights[%d]%@", i, @".position"] UTF8String]), light->position.x, light->position.y, light->position.z);
+        glUniform3f(glGetUniformLocation(program, [[NSString stringWithFormat:@"lights[%d]%@", i, @".direction"] UTF8String]), light->direction.x, light->direction.y, light->direction.z);
+        glUniform1f(glGetUniformLocation(program, [[NSString stringWithFormat:@"lights[%d]%@", i, @".size"] UTF8String]), light->size);
+    }
+    
+    glUniform1i(glGetUniformLocation(program, "numLights"), (GLuint)[lights count]);
+    
+    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
     [models enumerateKeysAndObjectsUsingBlock:^(NSString* texture, NSMutableArray* models, BOOL* stop) {
         glUniform1i(uniforms[UNIFORM_TEXTURE], (unsigned int)[textures[texture] intValue]);
         
@@ -155,11 +197,14 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
             
             GLKMatrix4 mvpMatrix = m.position;
             normalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(mvpMatrix), NULL);
+            glUniformMatrix4fv(uniforms[UNIFORM_MV_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
             
             float aspect = (float)view.drawableWidth / (float)view.drawableHeight;
             perspectiveMatrix = GLKMatrix4MakePerspective(60.0f * M_PI / 180.0f, aspect, 1.0f, 20.0f);
             
             mvpMatrix = GLKMatrix4Multiply(GLKMatrix4Invert(cameraMatrix, FALSE), mvpMatrix);
+            
+            
             mvpMatrix = GLKMatrix4Multiply(perspectiveMatrix, mvpMatrix);
 
             glUniformMatrix4fv(uniforms[UNIFORM_MVP_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
@@ -212,6 +257,7 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
     }
     
     uniforms[UNIFORM_MVP_MATRIX] = glGetUniformLocation(program, "modelViewProjectionMatrix");
+    uniforms[UNIFORM_MV_MATRIX] = glGetUniformLocation(program, "modelViewMatrix");
     uniforms[UNIFORM_NORMAL_MATRIX] = glGetUniformLocation(program, "normalMatrix");
     uniforms[UNIFORM_PASS] = glGetUniformLocation(program, "passThrough");
     uniforms[UNIFORM_SHADEINFRAG] = glGetUniformLocation(program, "shadeInFrag");
@@ -260,6 +306,10 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
     
     [textures setObject:[NSNumber numberWithInt:val] forKey:fileName];
     
+}
+
++ (void)addLight:(Light *)light {
+    [lights addObject:[NSValue valueWithPointer:light]];
 }
 
 @end

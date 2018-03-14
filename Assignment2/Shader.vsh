@@ -1,17 +1,31 @@
 #version 300 es
+#define LIGHT_TYPE_DIRECTIONAL 0
+#define LIGHT_TYPE_SPOT 1
 
 layout(location = 0) in vec4 position;
 layout(location = 1) in vec4 color;
 layout(location = 2) in vec3 normal;
 layout(location = 3) in vec2 texCoordIn;
 out vec4 v_color;
+out vec3 v_position;
 out vec3 v_normal;
 out vec2 v_texcoord;
 
+struct Light {
+    int type;
+    vec3 color;
+    vec3 position;
+    vec3 direction;
+    float size;
+};
+
 uniform mat4 modelViewProjectionMatrix;
+uniform mat4 modelViewMatrix;
 uniform mat3 normalMatrix;
 uniform bool passThrough;
 uniform bool shadeInFrag;
+uniform Light lights[10];
+uniform int numLights;
 
 void main()
 {
@@ -23,6 +37,7 @@ void main()
         v_texcoord = vec2(0, 0);
     } else if (shadeInFrag) {
         v_normal = normal;
+        v_position = (modelViewMatrix * position).xyz;
         v_texcoord = texCoordIn;
     } else {
         // Diffuse shading
