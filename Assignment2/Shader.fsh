@@ -71,8 +71,8 @@ void main()
             float fogFactor = 1.0;
             if (fogType == 0) {
                 // Linear fog
-                float fogMin = 2.0;
-                float fogMax = 12.0;
+                float fogMin = 3.0;
+                float fogMax = 14.0;
                 fogFactor = clamp((fogMax - length(v_localPosition)) / (fogMax - fogMin), 0.0, 1.0);
             }
             else {

@@ -10,6 +10,13 @@
 		3D1E29E420589B3B007F70C0 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1E29E320589B3B007F70C0 /* Model.m */; };
 		9915794120575777006DAAD5 /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9915794020575777006DAAD5 /* Renderer.mm */; };
 		99249486205A2EB30015EEA7 /* EnvironmentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 99249485205A2EB30015EEA7 /* EnvironmentController.m */; };
+		9924948A205A41B30015EEA7 /* Shader2D.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 99249488205A41B30015EEA7 /* Shader2D.fsh */; };
+		9924948B205A41B30015EEA7 /* Shader2D.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 99249489205A41B30015EEA7 /* Shader2D.vsh */; };
+		9924948D205A45F50015EEA7 /* groovy.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9924948C205A45F50015EEA7 /* groovy.jpg */; };
+		9924948F205A46950015EEA7 /* tiger.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9924948E205A46950015EEA7 /* tiger.jpg */; };
+		99249491205A47160015EEA7 /* beauty.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 99249490205A47160015EEA7 /* beauty.jpg */; };
+		99249493205A47F40015EEA7 /* color.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 99249492205A47F40015EEA7 /* color.jpg */; };
+		99249495205A48F80015EEA7 /* kching.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 99249494205A48F80015EEA7 /* kching.jpg */; };
 		9976C6552058E31E00E26F2D /* crate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9976C6542058E31E00E26F2D /* crate.jpg */; };
 		99EC9DB72058EE7E00894B9E /* GLESRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99EC9DB62058EE7D00894B9E /* GLESRenderer.cpp */; };
 		99EC9DBA2058EE9000894B9E /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 99EC9DB82058EE9000894B9E /* Shader.fsh */; };
@@ -33,6 +40,13 @@
 		9915794220575793006DAAD5 /* Renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
 		99249485205A2EB30015EEA7 /* EnvironmentController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnvironmentController.m; sourceTree = "<group>"; };
 		99249487205A2EBE0015EEA7 /* EnvironmentController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnvironmentController.h; sourceTree = "<group>"; };
+		99249488205A41B30015EEA7 /* Shader2D.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Shader2D.fsh; sourceTree = "<group>"; };
+		99249489205A41B30015EEA7 /* Shader2D.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Shader2D.vsh; sourceTree = "<group>"; };
+		9924948C205A45F50015EEA7 /* groovy.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = groovy.jpg; sourceTree = "<group>"; };
+		9924948E205A46950015EEA7 /* tiger.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tiger.jpg; sourceTree = "<group>"; };
+		99249490205A47160015EEA7 /* beauty.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = beauty.jpg; sourceTree = "<group>"; };
+		99249492205A47F40015EEA7 /* color.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = color.jpg; sourceTree = "<group>"; };
+		99249494205A48F80015EEA7 /* kching.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = kching.jpg; sourceTree = "<group>"; };
 		995653492057735000D080E7 /* Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
 		9976C6542058E31E00E26F2D /* crate.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = crate.jpg; sourceTree = "<group>"; };
 		99EC9DB52058EE7D00894B9E /* GLESRenderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLESRenderer.hpp; sourceTree = "<group>"; };
@@ -97,21 +111,28 @@
 				9976C6542058E31E00E26F2D /* crate.jpg */,
 				DBFD7CC720474E5600A6E2C9 /* AppDelegate.h */,
 				99EC9DB82058EE9000894B9E /* Shader.fsh */,
+				99249488205A41B30015EEA7 /* Shader2D.fsh */,
+				99249489205A41B30015EEA7 /* Shader2D.vsh */,
 				99EC9DBC2058EF2E00894B9E /* badcrate.png */,
 				99EC9DB92058EE9000894B9E /* Shader.vsh */,
 				DBFD7CC820474E5600A6E2C9 /* AppDelegate.m */,
 				DBFD7CCA20474E5600A6E2C9 /* ViewController.h */,
 				DBFD7CCB20474E5600A6E2C9 /* ViewController.m */,
+				99249492205A47F40015EEA7 /* color.jpg */,
 				DBFD7CCD20474E5600A6E2C9 /* Main.storyboard */,
 				DBFD7CD020474E5600A6E2C9 /* Assets.xcassets */,
 				DBFD7CD220474E5600A6E2C9 /* LaunchScreen.storyboard */,
 				DBFD7CD520474E5600A6E2C9 /* Info.plist */,
 				DBFD7CD620474E5600A6E2C9 /* main.m */,
+				99249494205A48F80015EEA7 /* kching.jpg */,
 				A543B8DC2056074200ECE7F8 /* Game.mm */,
+				9924948E205A46950015EEA7 /* tiger.jpg */,
 				A543B8DE2056076900ECE7F8 /* Game.h */,
+				9924948C205A45F50015EEA7 /* groovy.jpg */,
 				9915794020575777006DAAD5 /* Renderer.mm */,
 				9915794220575793006DAAD5 /* Renderer.h */,
 				995653492057735000D080E7 /* Model.h */,
+				99249490205A47160015EEA7 /* beauty.jpg */,
 				3D1E29E320589B3B007F70C0 /* Model.m */,
 				3D91A22D2059AFCC0005BAB9 /* Light.h */,
 				99249485205A2EB30015EEA7 /* EnvironmentController.m */,
@@ -178,13 +199,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9924948A205A41B30015EEA7 /* Shader2D.fsh in Resources */,
 				99EC9DBD2058EF2E00894B9E /* badcrate.png in Resources */,
 				DBFD7CD420474E5600A6E2C9 /* LaunchScreen.storyboard in Resources */,
 				DBFD7CD120474E5600A6E2C9 /* Assets.xcassets in Resources */,
 				99EC9DBB2058EE9000894B9E /* Shader.vsh in Resources */,
+				99249495205A48F80015EEA7 /* kching.jpg in Resources */,
 				9976C6552058E31E00E26F2D /* crate.jpg in Resources */,
 				DBFD7CCF20474E5600A6E2C9 /* Main.storyboard in Resources */,
+				9924948B205A41B30015EEA7 /* Shader2D.vsh in Resources */,
 				99EC9DBA2058EE9000894B9E /* Shader.fsh in Resources */,
+				99249493205A47F40015EEA7 /* color.jpg in Resources */,
+				9924948D205A45F50015EEA7 /* groovy.jpg in Resources */,
+				9924948F205A46950015EEA7 /* tiger.jpg in Resources */,
+				99249491205A47160015EEA7 /* beauty.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
