@@ -11,6 +11,8 @@
 
 #import <Foundation/Foundation.h>
 #include "Renderer.h"
+#include "ModelGenerator.h"
+#import <GLKit/GLKit.h>
 
 struct CPPMaze;
 

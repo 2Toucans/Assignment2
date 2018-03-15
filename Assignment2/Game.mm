@@ -16,12 +16,12 @@ struct CPPMaze {
 
 enum Texture
 {
-    texWallBoth, texWallNone, texWallLeft, texWallRight, texPost, texTile
+    texWallBoth, texWallNone, texWallLeft, texWallRight, texPost, texTile, texCube
 };
 
 enum ModelType
 {
-    post, tile, vWallL, vWallR, hWallT, hWallB
+    post, tile, vWall, hWall, cube
 };
 
 @implementation Game
@@ -30,6 +30,8 @@ enum ModelType
     
     bool **vertWalls, **horizWalls;
     float yRotate;
+    
+    Model* spinCube;
 }
 
 - (id)init
@@ -42,9 +44,14 @@ enum ModelType
         rows = 4;
         cols = 4;
         
+        cppMaze->maze = Maze(rows, cols);
+        cppMaze->maze.Create();
+        
         [self populateWalls];
         
         [self setModels];
+        
+        [self makeCube:1 y:1 z:0 t:texCube];
     }
     return self;
 }
@@ -54,9 +61,9 @@ enum ModelType
     auto currentTime = std::chrono::steady_clock::now();
     auto timeElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime-lastTime).count();
     lastTime = currentTime;
+    
     //deal with spinning cube rotation
     
-    //deal with player movement
 }
 
 - (void)move:(float)x y:(float)y
@@ -87,7 +94,7 @@ enum ModelType
     //do last vert column
     for(int j = 0; j < cppMaze->maze.rows; j++)
     {
-        vertWalls[cppMaze->maze.cols][j] = cppMaze->maze.GetCell(cppMaze->maze.cols, j).eastWallPresent;
+        vertWalls[cppMaze->maze.cols][j] = cppMaze->maze.GetCell(cppMaze->maze.cols-1, j).eastWallPresent;
     }
     
     horizWalls = (bool**)calloc(cppMaze->maze.cols, sizeof(bool*));
@@ -98,7 +105,7 @@ enum ModelType
             horizWalls[i][j] = cppMaze->maze.GetCell(i, j).northWallPresent;
         }
         //do last horiz column
-        horizWalls[i][cppMaze->maze.rows] = cppMaze->maze.GetCell(i, cppMaze->maze.rows).southWallPresent;
+        horizWalls[i][cppMaze->maze.rows] = cppMaze->maze.GetCell(i, cppMaze->maze.rows-1).southWallPresent;
     }
 }
 
@@ -119,28 +126,28 @@ enum ModelType
             if(vertWalls[(int)offX][(int)offY])
             {
                 Texture wallTex = [self whichTexture:true x:(int)offX y:(int)offY];
-                [self makeModel:vWallL x:offX-0.025 y:offY+0.5 z:0 t:wallTex];
+                [self makeModel:vWall x:offX-0.025 y:offY+0.5 z:0 t:wallTex];
                 
                 if(wallTex == texWallLeft)
                     wallTex = texWallRight;
                 else if(wallTex == texWallRight)
                     wallTex = texWallLeft;
                 
-                [self makeModel:vWallR x:offX+0.025 y:offY+0.5 z:0 t:wallTex];
+                [self makeModel:vWall x:offX+0.025 y:offY+0.5 z:0 t:wallTex];
             }
             
             //horizontal walls
             if(horizWalls[(int)offX][(int)offY])
             {
                 Texture wallTex = [self whichTexture:false x:(int)offX y:(int)offY];
-                [self makeModel:hWallT x:offX+0.5 y:offY-0.025 z:0 t:wallTex];
+                [self makeModel:hWall x:offX+0.5 y:offY-0.025 z:0 t:wallTex];
                 
                 if(wallTex == texWallLeft)
                     wallTex = texWallRight;
                 else if(wallTex == texWallRight)
                     wallTex = texWallLeft;
                 
-                [self makeModel:hWallB x:offX+0.5 y:offY+0.025 z:0 t:wallTex];
+                [self makeModel:hWall x:offX+0.5 y:offY+0.025 z:0 t:wallTex];
             }
         }
         
@@ -151,14 +158,14 @@ enum ModelType
         if(horizWalls[(int)offX][cppMaze->maze.rows])
         {
             Texture wallTex = [self whichTexture:false x:(int)offX y:cppMaze->maze.rows];
-            [self makeModel:hWallT x:offX y:cppMaze->maze.rows-0.025 z:0 t:wallTex];
+            [self makeModel:hWall x:offX y:cppMaze->maze.rows-0.025 z:0 t:wallTex];
             
             if(wallTex == texWallLeft)
                 wallTex = texWallRight;
             else if(wallTex == texWallRight)
                 wallTex = texWallLeft;
             
-            [self makeModel:hWallB x:offX y:cppMaze->maze.rows+0.025 z:0 t:wallTex];
+            [self makeModel:hWall x:offX y:cppMaze->maze.rows+0.025 z:0 t:wallTex];
         }
     }
     
@@ -171,14 +178,14 @@ enum ModelType
         if(vertWalls[cppMaze->maze.cols][(int)offY])
         {
             Texture wallTex = [self whichTexture:true x:cppMaze->maze.cols y:(int)offY];
-            [self makeModel:vWallL x:cppMaze->maze.cols-0.025 y:offY z:0 t:wallTex];
+            [self makeModel:vWall x:cppMaze->maze.cols-0.025 y:offY z:0 t:wallTex];
             
             if(wallTex == texWallLeft)
                 wallTex = texWallRight;
             else if(wallTex == texWallRight)
                 wallTex = texWallLeft;
             
-            [self makeModel:vWallR x:cppMaze->maze.cols+0.025 y:offY z:0 t:wallTex];
+            [self makeModel:vWall x:cppMaze->maze.cols+0.025 y:offY z:0 t:wallTex];
         }
     }
     
@@ -189,56 +196,106 @@ enum ModelType
 //Formats the model then sends the pieces to the corresponding arrays in the renderer
 - (void)makeModel:(ModelType)type x:(float)xPos y:(float)yPos z:(float)zPos t:(Texture)tex
 {
+    NSString* fileName;
+    Model* model = [[Model alloc] init];
     
+    switch(tex)
+    {
+        case texWallBoth:
+            fileName = @"wallBoth.jpg";
+            break;
+        case texWallNone:
+            fileName = @"wallNone.jpg";
+            break;
+        case texWallLeft:
+            fileName = @"wallLeft.jpg";
+            break;
+        case texWallRight:
+            fileName = @"wallRight.jpg";
+            break;
+        case texPost:
+            fileName = @"post.jpg";
+            break;
+        case texTile:
+            fileName = @"tile.jpg";
+            break;
+        case texCube:
+            fileName = @"cube.jpg";
+            break;
+    }
+    
+    switch(type)
+    {
+        case post:
+            [model setVertices:[ModelGenerator postVerts]];
+            break;
+        case tile:
+            [model setVertices:[ModelGenerator tileVerts]];
+            break;
+        case vWall:
+            [model setVertices:[ModelGenerator vertWallVerts]];
+            break;
+        case hWall:
+            [model setVertices:[ModelGenerator horizWallVerts]];
+            break;
+        case cube:
+            [model setVertices:[ModelGenerator cubeVerts]];
+            break;
+    }
+    
+    [model setNormals:[ModelGenerator cubeNormals]];
+    [model setTexCoords:[ModelGenerator cubeTex]];
+    [model setIndices:[ModelGenerator cubeInds]];
+    [model setPosition:GLKMatrix4Translate(GLKMatrix4Identity, xPos, zPos, yPos)];
+    
+    [Renderer addModel:model texture:fileName];
 }
 
 //Determines which textures the wall should have based on surrounding
 //walls and its orientation
-- (Texture)whichTexture:(bool)vertical x:(int)xPos y:(int)yPos
+- (Texture)whichTexture:(bool)vertical x:(int)x y:(int)y
 {
     Texture tex;
+    
     if(vertical)
     {
-        //vertWalls[xPos][yPos]
-        //if yPos-1 != null && yPos
+        if (x > 0 && vertWalls[x-1][y] && (x+1 > cppMaze->maze.rows || !vertWalls[x+1][y]))
+            tex = texWallLeft;
+        else if(x < cppMaze->maze.rows && vertWalls[x+1][y] && (x == 0 || !vertWalls[x-1][y]))
+            tex = texWallRight;
+        else if(x > 0 && x < cppMaze->maze.rows && vertWalls[x-1][y] && vertWalls[x+1][y])
+            tex = texWallBoth;
+        else
+            tex = texWallNone;
     }
-    else
+    else //horizontal
     {
-        
+        if (y > 0 && horizWalls[x][y-1] && (y+1 > cppMaze->maze.cols || !horizWalls[x][y+1]))
+            tex = texWallLeft;
+        else if(y < cppMaze->maze.cols && horizWalls[x][y+1] && (y == 0 || !horizWalls[x][y-1]))
+            tex = texWallRight;
+        else if(y > 0 && y < cppMaze->maze.cols && horizWalls[x][y-1] && horizWalls[x][y+1])
+            tex = texWallBoth;
+        else
+            tex = texWallNone;
     }
     
-    return texWallLeft;
+    return tex;
 }
 
-//USE MAZE LIKE THIS:
-//cppMaze->maze.method();
+//Makes the spinning cube and stores it
+- (void)makeCube:(float)xPos y:(float)yPos z:(float)zPos t:(Texture)tex
+{
+    NSString* fileName = @"cube.jpg";
+    spinCube = [[Model alloc] init];
 
-/*float cubeVerts[] =
- {
- -0.4f, -0.4f, -0.025f,
- -0.4f, -0.4f,  0.025f,
-  0.4f, -0.4f,  0.025f,
-  0.4f, -0.4f, -0.025f,
- -0.4f,  0.4f, -0.025f,
- -0.4f,  0.4f,  0.025f,
-  0.4f,  0.4f,  0.025f,
-  0.4f,  0.4f, -0.025f,
- -0.4f, -0.4f, -0.025f,
- -0.4f,  0.4f, -0.025f,
-  0.4f,  0.4f, -0.025f,
-  0.4f, -0.4f, -0.025f,
- -0.4f, -0.4f,  0.025f,
- -0.4f,  0.4f,  0.025f,
-  0.4f,  0.4f,  0.025f,
-  0.4f, -0.4f,  0.025f,
- -0.4f, -0.4f, -0.025f,
- -0.4f, -0.4f,  0.025f,
- -0.4f,  0.4f,  0.025f,
- -0.4f,  0.4f, -0.025f,
-  0.4f, -0.4f, -0.025f,
-  0.4f, -0.4f,  0.025f,
-  0.4f,  0.4f,  0.025f,
-  0.4f,  0.4f, -0.025f,
- };*/
+    [spinCube setVertices:[ModelGenerator cubeVerts]];
+    [spinCube setNormals:[ModelGenerator cubeNormals]];
+    [spinCube setTexCoords:[ModelGenerator cubeTex]];
+    [spinCube setIndices:[ModelGenerator cubeInds]];
+    [spinCube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, xPos, zPos, yPos)];
+    
+    [Renderer addModel:spinCube texture:fileName];
+}
 
 @end
