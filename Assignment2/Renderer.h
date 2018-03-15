@@ -11,6 +11,7 @@
 
 #import <Foundation/Foundation.h>
 #include "Model.h"
+#include "Light.h"
 
 @interface Renderer : NSObject
 
@@ -22,11 +23,17 @@
 
 + (void)addModel: (Model*)model texture:(NSString*)texture;
 
++ (void)addLight: (Light*)light;
+
 + (void)moveCamera: (float)x y:(float)y z:(float)z;
 
 + (void)moveCameraRelative: (float)x y:(float)y z:(float)z;
 
 + (void)rotateCamera:(float)angle x:(float)x y:(float)y z:(float)z;
+
++ (void)setFog:(bool)enabled type:(int)type color:(GLKVector3)color;
+
++ (void)setBackground: (GLKVector3)color;
 
 @end
 
