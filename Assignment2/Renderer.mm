@@ -11,6 +11,7 @@
 #include <chrono>
 #include "GLESRenderer.hpp"
 #include "Renderer.h"
+#include "EnvironmentController.h"
 
 enum {
     UNIFORM_MVP_MATRIX,
@@ -46,6 +47,10 @@ GLKMatrix3 normalMatrix;
 GLKMatrix4 perspectiveMatrix;
 GLKMatrix4 cameraMatrix;
 float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
+
+bool fogOn = false;
+int fogType = 0;
+GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
 
 @interface Renderer ()
 + (bool)setupShaders;
@@ -118,37 +123,11 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
         }
     }
     
-    Light* light = (Light*)malloc(sizeof(Light));
-    light->color = GLKVector3Make(1.0, 1.0, 0.8);
-    light->direction = GLKVector3Make(0.0, -1.0, -0.3);
-    light->type = DIRECTIONAL_LIGHT;
+    EnvironmentController* e = [[EnvironmentController alloc] init];
+    [e toggleFog];
+    [e toggleFogType];
     
-    [self addLight:light];
-    
-    light = (Light*)malloc(sizeof(Light));
-    light->color = GLKVector3Make(0.0, 0.25, 0.7);
-    light->direction = GLKVector3Make(-0.5, 0.3, -1.0);
-    light->type = DIRECTIONAL_LIGHT;
-    
-    [self addLight:light];
-    
-    light = (Light*)malloc(sizeof(Light));
-    light->color = GLKVector3Make(1.5, 1.5, 1.5);
-    light->direction = GLKVector3Make(0.0, 0.0, -1.0);
-    light->position = GLKVector3Make(0.0, 0.0, 2.0);
-    light->size = 0.5;
-    light->type = SPOT_LIGHT;
-    
-    [self addLight:light];
-    
-    light = (Light*)malloc(sizeof(Light));
-    light->color = GLKVector3Make(0.3, 0.3, 0.3);
-    light->type = AMBIENT_LIGHT;
-    
-    [self addLight:light];
-    
-    [Renderer moveCamera:0 y:1 z:4];
-    [Renderer rotateCamera:0.24 x:1 y:0 z:0];
+    [Renderer moveCamera:20 y:2 z:20];
     
 }
 
@@ -176,6 +155,11 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
     
     [models enumerateKeysAndObjectsUsingBlock:^(NSString* texture, NSMutableArray* models, BOOL* stop) {
         glUniform1i(uniforms[UNIFORM_TEXTURE], (unsigned int)[textures[texture] intValue]);
+        glUniform1i(uniforms[UNIFORM_PASS], false);
+        glUniform1i(uniforms[UNIFORM_SHADEINFRAG], true);
+        glUniform1i(uniforms[UNIFORM_FOG_ENABLED], fogOn);
+        glUniform1i(uniforms[UNIFORM_FOG_TYPE], fogType);
+        glUniform3f(uniforms[UNIFORM_FOG_COLOR], fogColor.r, fogColor.g, fogColor.b);
         
         for (int i = 0; i < [models count]; i++) {
             Model* m = models[i];
@@ -195,11 +179,6 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
 
             glUniformMatrix4fv(uniforms[UNIFORM_MVP_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
             glUniformMatrix3fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, normalMatrix.m);
-            glUniform1i(uniforms[UNIFORM_PASS], false);
-            glUniform1i(uniforms[UNIFORM_SHADEINFRAG], true);
-            glUniform1i(uniforms[UNIFORM_FOG_ENABLED], true);
-            glUniform1i(uniforms[UNIFORM_FOG_TYPE], 1);
-            glUniform3f(uniforms[UNIFORM_FOG_COLOR], 1.0, 1.0, 1.0);
             
             glViewport(0, 0, (int)view.drawableWidth, (int)view.drawableHeight);
             glUseProgram(program);
@@ -303,6 +282,20 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
 
 + (void)addLight:(Light *)light {
     [lights addObject:[NSValue valueWithPointer:light]];
+}
+
++ (void)setFog:(bool)enabled type:(int)type color:(GLKVector3)color {
+    fogOn = enabled;
+    fogType = type;
+    fogColor = color;
+}
+
++ (void)setBackground:(GLKVector3)color {
+    bgColor[0] = color.r;
+    bgColor[1] = color.g;
+    bgColor[2] = color.b;
+    
+    glClearColor(bgColor[0], bgColor[1], bgColor[2], bgColor[3]);
 }
 
 @end

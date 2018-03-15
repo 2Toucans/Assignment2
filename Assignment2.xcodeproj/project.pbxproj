@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3D1E29E420589B3B007F70C0 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1E29E320589B3B007F70C0 /* Model.m */; };
 		9915794120575777006DAAD5 /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9915794020575777006DAAD5 /* Renderer.mm */; };
+		99249486205A2EB30015EEA7 /* EnvironmentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 99249485205A2EB30015EEA7 /* EnvironmentController.m */; };
 		9976C6552058E31E00E26F2D /* crate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9976C6542058E31E00E26F2D /* crate.jpg */; };
 		99EC9DB72058EE7E00894B9E /* GLESRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99EC9DB62058EE7D00894B9E /* GLESRenderer.cpp */; };
 		99EC9DBA2058EE9000894B9E /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 99EC9DB82058EE9000894B9E /* Shader.fsh */; };
@@ -30,6 +31,8 @@
 		3D91A22D2059AFCC0005BAB9 /* Light.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Light.h; sourceTree = "<group>"; };
 		9915794020575777006DAAD5 /* Renderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Renderer.mm; sourceTree = "<group>"; };
 		9915794220575793006DAAD5 /* Renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
+		99249485205A2EB30015EEA7 /* EnvironmentController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnvironmentController.m; sourceTree = "<group>"; };
+		99249487205A2EBE0015EEA7 /* EnvironmentController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnvironmentController.h; sourceTree = "<group>"; };
 		995653492057735000D080E7 /* Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
 		9976C6542058E31E00E26F2D /* crate.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = crate.jpg; sourceTree = "<group>"; };
 		99EC9DB52058EE7D00894B9E /* GLESRenderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLESRenderer.hpp; sourceTree = "<group>"; };
@@ -111,6 +114,8 @@
 				995653492057735000D080E7 /* Model.h */,
 				3D1E29E320589B3B007F70C0 /* Model.m */,
 				3D91A22D2059AFCC0005BAB9 /* Light.h */,
+				99249485205A2EB30015EEA7 /* EnvironmentController.m */,
+				99249487205A2EBE0015EEA7 /* EnvironmentController.h */,
 			);
 			path = Assignment2;
 			sourceTree = "<group>";
@@ -197,6 +202,7 @@
 				A543B8DA2055EAFB00ECE7F8 /* maze.cpp in Sources */,
 				A543B8DD2056074200ECE7F8 /* Game.mm in Sources */,
 				99EC9DB72058EE7E00894B9E /* GLESRenderer.cpp in Sources */,
+				99249486205A2EB30015EEA7 /* EnvironmentController.m in Sources */,
 				DBFD7CC920474E5600A6E2C9 /* AppDelegate.m in Sources */,
 				A543B8DB2055EAFB00ECE7F8 /* DisjointSet.cpp in Sources */,
 			);
