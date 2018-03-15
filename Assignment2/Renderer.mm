@@ -34,9 +34,11 @@ enum {
 };
 
 GLint uniforms[NUM_UNIFORMS];
+GLint uniforms2D[NUM_UNIFORMS];
 GLKView* view;
 GLESRenderer glesRenderer;
 GLuint program;
+GLuint program2D;
 std::chrono::time_point<std::chrono::steady_clock> prevFrameTime;
 
 NSMutableDictionary* models;
@@ -102,6 +104,7 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
     
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 20; j++) {
+            cube = [[Model alloc] init];
             [cube setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices))];
             [cube setVertices:vertices];
             [cube setNormals:normals];
@@ -109,7 +112,7 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
             [cube setIndices:indices];
             [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, 1.5 * j, 0, 3 * i)];
             
-            [self addModel:cube texture:@"crate.jpg"];
+            [self addModel:cube texture:@"color.jpg"];
             
             cube = [[Model alloc] init];
             [cube setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices))];
@@ -119,13 +122,12 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
             [cube setIndices:indices];
             [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, 1.5 * j, 0, 3 * i + 2)];
             
-            [self addModel:cube texture:@"badcrate.png"];
+            [self addModel:cube texture:@"kching.jpg"];
         }
     }
     
     EnvironmentController* e = [[EnvironmentController alloc] init];
     [e toggleFog];
-    [e toggleFogType];
     
     [Renderer moveCamera:20 y:2 z:20];
     
@@ -138,6 +140,9 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
 + (void)draw: (CGRect)drawRect {
     
     // Set up the light uniforms
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glUseProgram(program);
+
     for (int i = 0; i < [lights count]; i++) {
         Light* light;
         [lights[i] getValue:&light];
@@ -149,9 +154,6 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
     }
     
     glUniform1i(glGetUniformLocation(program, "numLights"), (GLuint)[lights count]);
-    
-    
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     [models enumerateKeysAndObjectsUsingBlock:^(NSString* texture, NSMutableArray* models, BOOL* stop) {
         glUniform1i(uniforms[UNIFORM_TEXTURE], (unsigned int)[textures[texture] intValue]);
@@ -181,7 +183,6 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
             glUniformMatrix3fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, normalMatrix.m);
             
             glViewport(0, 0, (int)view.drawableWidth, (int)view.drawableHeight);
-            glUseProgram(program);
             
             glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), m.vertices);
             glEnableVertexAttribArray(0);
@@ -194,6 +195,9 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
             glDrawElements(GL_TRIANGLES, m.numIndices, GL_UNSIGNED_INT, m.indices);
         }
     }];
+    
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glUseProgram(program2D);
 }
 
 + (void)addModel: (Model*)model texture:(NSString*)texture {
@@ -224,6 +228,13 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
         return false;
     }
     
+    vShaderStr = glesRenderer.LoadShaderFile([[[NSBundle mainBundle] pathForResource: [[NSString stringWithUTF8String:"Shader2D.vsh"] stringByDeletingPathExtension] ofType:[[NSString stringWithUTF8String:"Shader2D.vsh"] pathExtension]] cStringUsingEncoding:1]);
+    fShaderStr = glesRenderer.LoadShaderFile([[[NSBundle mainBundle] pathForResource: [[NSString stringWithUTF8String:"Shader2D.fsh"] stringByDeletingPathExtension] ofType:[[NSString stringWithUTF8String:"Shader2D.fsh"] pathExtension]] cStringUsingEncoding:1]);
+    program2D = glesRenderer.LoadProgram(vShaderStr, fShaderStr);
+    if (program2D == 0) {
+        return false;
+    }
+    
     uniforms[UNIFORM_MVP_MATRIX] = glGetUniformLocation(program, "modelViewProjectionMatrix");
     uniforms[UNIFORM_MV_MATRIX] = glGetUniformLocation(program, "modelViewMatrix");
     uniforms[UNIFORM_M_MATRIX] = glGetUniformLocation(program, "modelMatrix");
@@ -234,6 +245,10 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
     uniforms[UNIFORM_FOG_ENABLED] = glGetUniformLocation(program, "fogEnabled");
     uniforms[UNIFORM_FOG_TYPE] = glGetUniformLocation(program, "fogType");
     uniforms[UNIFORM_FOG_COLOR] = glGetUniformLocation(program, "fogColor");
+    
+    uniforms2D[UNIFORM_MVP_MATRIX] = glGetUniformLocation(program2D, "modelViewProjectionMatrix");
+    uniforms2D[UNIFORM_PASS] = glGetUniformLocation(program2D, "passThrough");
+    uniforms2D[UNIFORM_SHADEINFRAG] = glGetUniformLocation(program2D, "shadeInFrag");
     
     return true;
 }
