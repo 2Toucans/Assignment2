@@ -76,20 +76,29 @@ enum ModelType
 
 - (void)populateWalls
 {
-    vertWalls = (bool**)calloc(rows+1, sizeof(bool*));
-    for (int i = 0; i < rows+1; i++) {
-        vertWalls[i] = (bool*)calloc(cols, sizeof(bool));
-        for(int j = 0; j < cols; j++) {
+    vertWalls = (bool**)calloc(cppMaze->maze.cols+1, sizeof(bool*));
+    for (int i = 0; i < cppMaze->maze.cols; i++) {
+        vertWalls[i] = (bool*)calloc(cppMaze->maze.rows, sizeof(bool));
+        for(int j = 0; j < cppMaze->maze.rows; j++) {
             //check for walls and set true if wall
+            vertWalls[i][j] = cppMaze->maze.GetCell(i, j).westWallPresent;
         }
     }
+    //do last vert column
+    for(int j = 0; j < cppMaze->maze.rows; j++)
+    {
+        vertWalls[cppMaze->maze.cols][j] = cppMaze->maze.GetCell(cppMaze->maze.cols, j).eastWallPresent;
+    }
     
-    horizWalls = (bool**)calloc(rows, sizeof(bool*));
-    for (int i = 0; i < rows; i++) {
-        horizWalls[i] = (bool*)calloc(cols+1, sizeof(bool));
-        for(int j = 0; j < cols+1; j++) {
+    horizWalls = (bool**)calloc(cppMaze->maze.cols, sizeof(bool*));
+    for (int i = 0; i < cppMaze->maze.cols; i++) {
+        horizWalls[i] = (bool*)calloc(cppMaze->maze.rows+1, sizeof(bool));
+        for(int j = 0; j < cppMaze->maze.rows; j++) {
             //check for walls and set true if wall
+            horizWalls[i][j] = cppMaze->maze.GetCell(i, j).northWallPresent;
         }
+        //do last horiz column
+        horizWalls[i][cppMaze->maze.rows] = cppMaze->maze.GetCell(i, cppMaze->maze.rows).southWallPresent;
     }
 }
 
@@ -109,7 +118,7 @@ enum ModelType
             //vertical walls
             if(vertWalls[(int)offX][(int)offY])
             {
-                Texture wallTex = [self whichTexture:true x:offX y:offY];
+                Texture wallTex = [self whichTexture:true x:(int)offX y:(int)offY];
                 [self makeModel:vWallL x:offX-0.025 y:offY+0.5 z:0 t:wallTex];
                 
                 if(wallTex == texWallLeft)
@@ -123,7 +132,7 @@ enum ModelType
             //horizontal walls
             if(horizWalls[(int)offX][(int)offY])
             {
-                Texture wallTex = [self whichTexture:false x:offX y:offY];
+                Texture wallTex = [self whichTexture:false x:(int)offX y:(int)offY];
                 [self makeModel:hWallT x:offX+0.5 y:offY-0.025 z:0 t:wallTex];
                 
                 if(wallTex == texWallLeft)
@@ -141,7 +150,7 @@ enum ModelType
         //missing row of horizontal walls
         if(horizWalls[(int)offX][cppMaze->maze.rows])
         {
-            Texture wallTex = [self whichTexture:false x:offX y:cppMaze->maze.rows];
+            Texture wallTex = [self whichTexture:false x:(int)offX y:cppMaze->maze.rows];
             [self makeModel:hWallT x:offX y:cppMaze->maze.rows-0.025 z:0 t:wallTex];
             
             if(wallTex == texWallLeft)
@@ -161,7 +170,7 @@ enum ModelType
         //missing column of vertical walls
         if(vertWalls[cppMaze->maze.cols][(int)offY])
         {
-            Texture wallTex = [self whichTexture:true x:cppMaze->maze.cols y:offY];
+            Texture wallTex = [self whichTexture:true x:cppMaze->maze.cols y:(int)offY];
             [self makeModel:vWallL x:cppMaze->maze.cols-0.025 y:offY z:0 t:wallTex];
             
             if(wallTex == texWallLeft)
@@ -185,11 +194,13 @@ enum ModelType
 
 //Determines which textures the wall should have based on surrounding
 //walls and its orientation
-- (Texture)whichTexture:(bool)vertical x:(float)xPos y:(float)yPos
+- (Texture)whichTexture:(bool)vertical x:(int)xPos y:(int)yPos
 {
+    Texture tex;
     if(vertical)
     {
-        
+        //vertWalls[xPos][yPos]
+        //if yPos-1 != null && yPos
     }
     else
     {
