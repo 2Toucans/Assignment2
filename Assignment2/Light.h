@@ -11,7 +11,8 @@
 
 enum {
     DIRECTIONAL_LIGHT,
-    SPOT_LIGHT
+    SPOT_LIGHT,
+    AMBIENT_LIGHT
 };
 
 typedef struct Light {

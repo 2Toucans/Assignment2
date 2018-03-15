@@ -8,6 +8,7 @@ layout(location = 2) in vec3 normal;
 layout(location = 3) in vec2 texCoordIn;
 out vec4 v_color;
 out vec3 v_position;
+out vec3 v_localPosition;
 out vec3 v_normal;
 out vec2 v_texcoord;
 
@@ -21,6 +22,7 @@ struct Light {
 
 uniform mat4 modelViewProjectionMatrix;
 uniform mat4 modelViewMatrix;
+uniform mat4 modelMatrix;
 uniform mat3 normalMatrix;
 uniform bool passThrough;
 uniform bool shadeInFrag;
@@ -37,7 +39,8 @@ void main()
         v_texcoord = vec2(0, 0);
     } else if (shadeInFrag) {
         v_normal = normal;
-        v_position = (modelViewMatrix * position).xyz;
+        v_position = (modelMatrix * position).xyz;
+        v_localPosition = (modelViewMatrix * position).xyz;
         v_texcoord = texCoordIn;
     } else {
         // Diffuse shading

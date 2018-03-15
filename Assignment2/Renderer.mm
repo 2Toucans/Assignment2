@@ -15,10 +15,14 @@
 enum {
     UNIFORM_MVP_MATRIX,
     UNIFORM_MV_MATRIX,
+    UNIFORM_M_MATRIX,
     UNIFORM_NORMAL_MATRIX,
     UNIFORM_PASS,
     UNIFORM_SHADEINFRAG,
     UNIFORM_TEXTURE,
+    UNIFORM_FOG_ENABLED,
+    UNIFORM_FOG_TYPE,
+    UNIFORM_FOG_COLOR,
     NUM_UNIFORMS
 };
 
@@ -90,54 +94,29 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
     float* normals;
     float* texCoords;
     int* indices;
-    [cube setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices))];
-    [cube setVertices:vertices];
-    [cube setNormals:normals];
-    [cube setTexCoords:texCoords];
-    [cube setIndices:indices];
-    [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, 0, 0, 0)];
     
-    [self addModel:cube texture:@"crate.jpg"];
-    
-    cube = [[Model alloc] init];
-    [cube setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices))];
-    [cube setVertices:vertices];
-    [cube setNormals:normals];
-    [cube setTexCoords:texCoords];
-    [cube setIndices:indices];
-    [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, 0, 1.2, 0)];
-    
-    [self addModel:cube texture:@"badcrate.png"];
-    
-    cube = [[Model alloc] init];
-    [cube setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices))];
-    [cube setVertices:vertices];
-    [cube setNormals:normals];
-    [cube setTexCoords:texCoords];
-    [cube setIndices:indices];
-    [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, 0, -1.2, 0)];
-    
-    [self addModel:cube texture:@"crate.jpg"];
-    
-    cube = [[Model alloc] init];
-    [cube setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices))];
-    [cube setVertices:vertices];
-    [cube setNormals:normals];
-    [cube setTexCoords:texCoords];
-    [cube setIndices:indices];
-    [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, -1.2, 0, 0)];
-    
-    [self addModel:cube texture:@"badcrate.png"];
-    
-    cube = [[Model alloc] init];
-    [cube setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices))];
-    [cube setVertices:vertices];
-    [cube setNormals:normals];
-    [cube setTexCoords:texCoords];
-    [cube setIndices:indices];
-    [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, 1.2, 0, 0)];
-    
-    [self addModel:cube texture:@"badcrate.png"];
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 20; j++) {
+            [cube setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices))];
+            [cube setVertices:vertices];
+            [cube setNormals:normals];
+            [cube setTexCoords:texCoords];
+            [cube setIndices:indices];
+            [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, 1.5 * j, 0, 3 * i)];
+            
+            [self addModel:cube texture:@"crate.jpg"];
+            
+            cube = [[Model alloc] init];
+            [cube setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices))];
+            [cube setVertices:vertices];
+            [cube setNormals:normals];
+            [cube setTexCoords:texCoords];
+            [cube setIndices:indices];
+            [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, 1.5 * j, 0, 3 * i + 2)];
+            
+            [self addModel:cube texture:@"badcrate.png"];
+        }
+    }
     
     Light* light = (Light*)malloc(sizeof(Light));
     light->color = GLKVector3Make(1.0, 1.0, 0.8);
@@ -159,6 +138,12 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
     light->position = GLKVector3Make(0.0, 0.0, 2.0);
     light->size = 0.5;
     light->type = SPOT_LIGHT;
+    
+    [self addLight:light];
+    
+    light = (Light*)malloc(sizeof(Light));
+    light->color = GLKVector3Make(0.3, 0.3, 0.3);
+    light->type = AMBIENT_LIGHT;
     
     [self addLight:light];
     
@@ -197,13 +182,14 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
             
             GLKMatrix4 mvpMatrix = m.position;
             normalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(mvpMatrix), NULL);
-            glUniformMatrix4fv(uniforms[UNIFORM_MV_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
+            glUniformMatrix4fv(uniforms[UNIFORM_M_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
             
             float aspect = (float)view.drawableWidth / (float)view.drawableHeight;
-            perspectiveMatrix = GLKMatrix4MakePerspective(60.0f * M_PI / 180.0f, aspect, 1.0f, 20.0f);
+            perspectiveMatrix = GLKMatrix4MakePerspective(60.0f * M_PI / 180.0f, aspect, 0.01f, 200.0f);
             
             mvpMatrix = GLKMatrix4Multiply(GLKMatrix4Invert(cameraMatrix, FALSE), mvpMatrix);
             
+            glUniformMatrix4fv(uniforms[UNIFORM_MV_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
             
             mvpMatrix = GLKMatrix4Multiply(perspectiveMatrix, mvpMatrix);
 
@@ -211,6 +197,9 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
             glUniformMatrix3fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, normalMatrix.m);
             glUniform1i(uniforms[UNIFORM_PASS], false);
             glUniform1i(uniforms[UNIFORM_SHADEINFRAG], true);
+            glUniform1i(uniforms[UNIFORM_FOG_ENABLED], true);
+            glUniform1i(uniforms[UNIFORM_FOG_TYPE], 1);
+            glUniform3f(uniforms[UNIFORM_FOG_COLOR], 1.0, 1.0, 1.0);
             
             glViewport(0, 0, (int)view.drawableWidth, (int)view.drawableHeight);
             glUseProgram(program);
@@ -258,10 +247,14 @@ float bgColor[] = {0.2f, 0.7f, 0.95f, 0.0f};
     
     uniforms[UNIFORM_MVP_MATRIX] = glGetUniformLocation(program, "modelViewProjectionMatrix");
     uniforms[UNIFORM_MV_MATRIX] = glGetUniformLocation(program, "modelViewMatrix");
+    uniforms[UNIFORM_M_MATRIX] = glGetUniformLocation(program, "modelMatrix");
     uniforms[UNIFORM_NORMAL_MATRIX] = glGetUniformLocation(program, "normalMatrix");
     uniforms[UNIFORM_PASS] = glGetUniformLocation(program, "passThrough");
     uniforms[UNIFORM_SHADEINFRAG] = glGetUniformLocation(program, "shadeInFrag");
     uniforms[UNIFORM_TEXTURE] = glGetUniformLocation(program, "texSampler");
+    uniforms[UNIFORM_FOG_ENABLED] = glGetUniformLocation(program, "fogEnabled");
+    uniforms[UNIFORM_FOG_TYPE] = glGetUniformLocation(program, "fogType");
+    uniforms[UNIFORM_FOG_COLOR] = glGetUniformLocation(program, "fogColor");
     
     return true;
 }
