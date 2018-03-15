@@ -72,12 +72,12 @@ void main()
             if (fogType == 0) {
                 // Linear fog
                 float fogMin = 2.0;
-                float fogMax = 15.0;
+                float fogMax = 12.0;
                 fogFactor = clamp((fogMax - length(v_localPosition)) / (fogMax - fogMin), 0.0, 1.0);
             }
             else {
                 // Exponential fog
-                float density = 0.3;
+                float density = 0.15;
                 float exponent = length(v_localPosition) * density;
                 fogFactor = clamp(1.0 / exp(exponent), 0.0, 1.0);
             }
