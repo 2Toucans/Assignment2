@@ -14,12 +14,9 @@
 #include "ModelGenerator.h"
 #import <GLKit/GLKit.h>
 
-struct CPPMaze;
-
 @interface Game : NSObject
 {
     @private
-    struct CPPMaze* cppMaze;
     int rows, cols;
 }
 
