@@ -4,6 +4,8 @@
 #define LIGHT_TYPE_SPOT 1
 #define LIGHT_TYPE_AMBIENT 2
 
+#define LITE_SHADER
+
 precision highp float;
 in vec4 v_color;
 in vec3 v_position;
@@ -40,6 +42,7 @@ void main()
     if (!passThrough && shadeInFrag) {
         vec3 eyeNormal = normalize(normalMatrix * v_normal);
         vec4 diffuseColor = vec4(1.0, 1.0, 1.0, 1.0);
+#ifndef LITE_SHADER
         vec4 brightness = vec4(0.0, 0.0, 0.0, 0.0);
         
         for (int i = 0; i < numLights; i++) {
@@ -86,6 +89,10 @@ void main()
         else {
             o_fragColor = brightness * diffuseColor * texture(texSampler, v_texcoord);
         }
+
+#else
+        o_fragColor = diffuseColor * texture(texSampler, v_texcoord);
+#endif
     } else {
         o_fragColor = v_color;
     }

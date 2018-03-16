@@ -97,39 +97,7 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
     lights = [[NSMutableArray alloc] init];
     cameraMatrix = GLKMatrix4Identity;
     
-    float* vertices;
-    float* normals;
-    float* texCoords;
-    int* indices;
-    
-    for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 20; j++) {
-            cube = [[Model alloc] init];
-            [cube setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices))];
-            [cube setVertices:vertices];
-            [cube setNormals:normals];
-            [cube setTexCoords:texCoords];
-            [cube setIndices:indices];
-            [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, 1.5 * j, 0, 3 * i)];
-            
-            [self addModel:cube texture:@"color.jpg"];
-            
-            cube = [[Model alloc] init];
-            [cube setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices))];
-            [cube setVertices:vertices];
-            [cube setNormals:normals];
-            [cube setTexCoords:texCoords];
-            [cube setIndices:indices];
-            [cube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, 1.5 * j, 0, 3 * i + 2)];
-            
-            [self addModel:cube texture:@"kching.jpg"];
-        }
-    }
-    
-    EnvironmentController* e = [[EnvironmentController alloc] init];
-    [e toggleFog];
-    
-    [Renderer moveCamera:20 y:2 z:20];
+    [Renderer moveCamera:3 y:2 z:0];
     
 }
 
