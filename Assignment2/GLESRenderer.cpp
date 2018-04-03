@@ -118,15 +118,71 @@ GLuint GLESRenderer::LoadProgram(const char *vertShaderSrc, const char *fragShad
     return programObject;
 }
 
-
+//type: 0 = vertWall, 1 = horizWall, 2 = tile, 3 = post, 4 = cube
 int GLESRenderer::GenCube(float scale, float **vertices, float **normals,
-                          float **texCoords, int **indices)
+                          float **texCoords, int **indices, int type)
 {
     int i;
     int numVertices = 24;
     int numIndices = 36;
     
-    float cubeVerts[] =
+    float vertWallVerts[] =
+    {
+        -0.025f, -0.5f, -0.4f,
+        -0.025f, -0.5f,  0.4f,
+        0.025f, -0.5f,  0.4f,
+        0.025f, -0.5f, -0.4f,
+        -0.025f,  0.5f, -0.4f,
+        -0.025f,  0.5f,  0.4f,
+        0.025f,  0.5f,  0.4f,
+        0.025f,  0.5f, -0.4f,
+        -0.025f, -0.5f, -0.4f,
+        -0.025f,  0.5f, -0.4f,
+        0.025f,  0.5f, -0.4f,
+        0.025f, -0.5f, -0.4f,
+        -0.025f, -0.5f,  0.4f,
+        -0.025f,  0.5f,  0.4f,
+        0.025f,  0.5f,  0.4f,
+        0.025f, -0.5f,  0.4f,
+        -0.025f, -0.5f, -0.4f,
+        -0.025f, -0.5f,  0.4f,
+        -0.025f,  0.5f,  0.4f,
+        -0.025f,  0.5f, -0.4f,
+        0.025f, -0.5f, -0.4f,
+        0.025f, -0.5f,  0.4f,
+        0.025f,  0.5f,  0.4f,
+        0.025f,  0.5f, -0.4f
+    };
+    
+    float horizWallVerts[] =
+    {
+        -0.4f, -0.5f, -0.025f,
+        -0.4f, -0.5f,  0.025f,
+        0.4f, -0.5f,  0.025f,
+        0.4f, -0.5f, -0.025f,
+        -0.4f,  0.5f, -0.025f,
+        -0.4f,  0.5f,  0.025f,
+        0.4f,  0.5f,  0.025f,
+        0.4f,  0.5f, -0.025f,
+        -0.4f, -0.5f, -0.025f,
+        -0.4f,  0.5f, -0.025f,
+        0.4f,  0.5f, -0.025f,
+        0.4f, -0.5f, -0.025f,
+        -0.4f, -0.5f,  0.025f,
+        -0.4f,  0.5f,  0.025f,
+        0.4f,  0.5f,  0.025f,
+        0.4f, -0.5f,  0.025f,
+        -0.4f, -0.5f, -0.025f,
+        -0.4f, -0.5f,  0.025f,
+        -0.4f,  0.5f,  0.025f,
+        -0.4f,  0.5f, -0.025f,
+        0.4f, -0.5f, -0.025f,
+        0.4f, -0.5f,  0.025f,
+        0.4f,  0.5f,  0.025f,
+        0.4f,  0.5f, -0.025f
+    };
+    
+    float tileVerts[] =
     {
         -0.5f, -0.5f, -0.5f,
         -0.5f, -0.5f,  0.5f,
@@ -140,10 +196,10 @@ int GLESRenderer::GenCube(float scale, float **vertices, float **normals,
         -0.5f,  0.5f, -0.5f,
         0.5f,  0.5f, -0.5f,
         0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f, 0.5f,
-        -0.5f,  0.5f, 0.5f,
-        0.5f,  0.5f, 0.5f,
-        0.5f, -0.5f, 0.5f,
+        -0.5f, -0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+        0.5f,  0.5f,  0.5f,
+        0.5f, -0.5f,  0.5f,
         -0.5f, -0.5f, -0.5f,
         -0.5f, -0.5f,  0.5f,
         -0.5f,  0.5f,  0.5f,
@@ -151,7 +207,63 @@ int GLESRenderer::GenCube(float scale, float **vertices, float **normals,
         0.5f, -0.5f, -0.5f,
         0.5f, -0.5f,  0.5f,
         0.5f,  0.5f,  0.5f,
-        0.5f,  0.5f, -0.5f,
+        0.5f,  0.5f, -0.5f
+    };
+    
+    float postVerts[] =
+    {
+        -0.1f, -0.5f, -0.1f,
+        -0.1f, -0.5f,  0.1f,
+        0.1f, -0.5f,  0.1f,
+        0.1f, -0.5f, -0.1f,
+        -0.1f,  0.5f, -0.1f,
+        -0.1f,  0.5f,  0.1f,
+        0.1f,  0.5f,  0.1f,
+        0.1f,  0.5f, -0.1f,
+        -0.1f, -0.5f, -0.1f,
+        -0.1f,  0.5f, -0.1f,
+        0.1f,  0.5f, -0.1f,
+        0.1f, -0.5f, -0.1f,
+        -0.1f, -0.5f,  0.1f,
+        -0.1f,  0.5f,  0.1f,
+        0.1f,  0.5f,  0.1f,
+        0.1f, -0.5f,  0.1f,
+        -0.1f, -0.5f, -0.1f,
+        -0.1f, -0.5f,  0.1f,
+        -0.1f,  0.5f,  0.1f,
+        -0.1f,  0.5f, -0.1f,
+        0.1f, -0.5f, -0.1f,
+        0.1f, -0.5f,  0.1f,
+        0.1f,  0.5f,  0.1f,
+        0.1f,  0.5f, -0.1f
+    };
+    
+    static float cubeVerts[] =
+    {
+        -0.2f, -0.2f, -0.2f,
+        -0.2f, -0.2f,  0.2f,
+        0.2f, -0.2f,  0.2f,
+        0.2f, -0.2f, -0.2f,
+        -0.2f,  0.2f, -0.2f,
+        -0.2f,  0.2f,  0.2f,
+        0.2f,  0.2f,  0.2f,
+        0.2f,  0.2f, -0.2f,
+        -0.2f, -0.2f, -0.2f,
+        -0.2f,  0.2f, -0.2f,
+        0.2f,  0.2f, -0.2f,
+        0.2f, -0.2f, -0.2f,
+        -0.2f, -0.2f,  0.2f,
+        -0.2f,  0.2f,  0.2f,
+        0.2f,  0.2f,  0.2f,
+        0.2f, -0.2f,  0.2f,
+        -0.2f, -0.2f, -0.2f,
+        -0.2f, -0.2f,  0.2f,
+        -0.2f,  0.2f,  0.2f,
+        -0.2f,  0.2f, -0.2f,
+        0.2f, -0.2f, -0.2f,
+        0.2f, -0.2f,  0.2f,
+        0.2f,  0.2f,  0.2f,
+        0.2f,  0.2f, -0.2f
     };
     
     float cubeNormals[] =
@@ -214,7 +326,17 @@ int GLESRenderer::GenCube(float scale, float **vertices, float **normals,
     if ( vertices != NULL )
     {
         *vertices = (float *)malloc ( sizeof ( float ) * 3 * numVertices );
-        memcpy ( *vertices, cubeVerts, sizeof ( cubeVerts ) );
+        
+        if(type == 0)
+            memcpy ( *vertices, vertWallVerts, sizeof ( vertWallVerts ) );
+        else if(type == 1)
+            memcpy ( *vertices, horizWallVerts, sizeof ( horizWallVerts ) );
+        else if(type == 2)
+            memcpy ( *vertices, tileVerts, sizeof ( tileVerts ) );
+        else if(type == 3)
+            memcpy ( *vertices, postVerts, sizeof ( postVerts ) );
+        else if(type == 4)
+            memcpy ( *vertices, cubeVerts, sizeof ( cubeVerts ) );
         
         for ( i = 0; i < numVertices * 3; i++ )
         {

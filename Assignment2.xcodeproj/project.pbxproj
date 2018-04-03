@@ -22,7 +22,6 @@
 		99EC9DBA2058EE9000894B9E /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 99EC9DB82058EE9000894B9E /* Shader.fsh */; };
 		99EC9DBB2058EE9000894B9E /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 99EC9DB92058EE9000894B9E /* Shader.vsh */; };
 		99EC9DBD2058EF2E00894B9E /* badcrate.png in Resources */ = {isa = PBXBuildFile; fileRef = 99EC9DBC2058EF2E00894B9E /* badcrate.png */; };
-		A52EC0EE205A3E960025AF83 /* ModelGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = A52EC0ED205A3E960025AF83 /* ModelGenerator.m */; };
 		A543B8DD2056074200ECE7F8 /* Game.mm in Sources */ = {isa = PBXBuildFile; fileRef = A543B8DC2056074200ECE7F8 /* Game.mm */; };
 		DBFD7CC920474E5600A6E2C9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFD7CC820474E5600A6E2C9 /* AppDelegate.m */; };
 		DBFD7CCC20474E5600A6E2C9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFD7CCB20474E5600A6E2C9 /* ViewController.m */; };
@@ -53,8 +52,6 @@
 		99EC9DB82058EE9000894B9E /* Shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Shader.fsh; sourceTree = "<group>"; };
 		99EC9DB92058EE9000894B9E /* Shader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Shader.vsh; sourceTree = "<group>"; };
 		99EC9DBC2058EF2E00894B9E /* badcrate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = badcrate.png; sourceTree = "<group>"; };
-		A52EC0EC205A2BC30025AF83 /* ModelGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModelGenerator.h; sourceTree = "<group>"; };
-		A52EC0ED205A3E960025AF83 /* ModelGenerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModelGenerator.m; sourceTree = "<group>"; };
 		A543B8DC2056074200ECE7F8 /* Game.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Game.mm; sourceTree = "<group>"; };
 		A543B8DE2056076900ECE7F8 /* Game.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		DBFD7CC420474E5600A6E2C9 /* Assignment2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Assignment2.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,8 +124,6 @@
 				995653492057735000D080E7 /* Model.h */,
 				99249490205A47160015EEA7 /* beauty.jpg */,
 				3D1E29E320589B3B007F70C0 /* Model.m */,
-				A52EC0EC205A2BC30025AF83 /* ModelGenerator.h */,
-				A52EC0ED205A3E960025AF83 /* ModelGenerator.m */,
 				3D91A22D2059AFCC0005BAB9 /* Light.h */,
 				99249485205A2EB30015EEA7 /* EnvironmentController.m */,
 				99249487205A2EBE0015EEA7 /* EnvironmentController.h */,
@@ -221,7 +216,6 @@
 				DBFD7CCC20474E5600A6E2C9 /* ViewController.m in Sources */,
 				DBFD7CD720474E5600A6E2C9 /* main.m in Sources */,
 				9915794120575777006DAAD5 /* Renderer.mm in Sources */,
-				A52EC0EE205A3E960025AF83 /* ModelGenerator.m in Sources */,
 				3D1E29E420589B3B007F70C0 /* Model.m in Sources */,
 				A543B8DD2056074200ECE7F8 /* Game.mm in Sources */,
 				99EC9DB72058EE7E00894B9E /* GLESRenderer.cpp in Sources */,
