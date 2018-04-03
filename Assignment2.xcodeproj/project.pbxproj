@@ -23,6 +23,8 @@
 		99EC9DBB2058EE9000894B9E /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 99EC9DB92058EE9000894B9E /* Shader.vsh */; };
 		99EC9DBD2058EF2E00894B9E /* badcrate.png in Resources */ = {isa = PBXBuildFile; fileRef = 99EC9DBC2058EF2E00894B9E /* badcrate.png */; };
 		A543B8DD2056074200ECE7F8 /* Game.mm in Sources */ = {isa = PBXBuildFile; fileRef = A543B8DC2056074200ECE7F8 /* Game.mm */; };
+		DB130E032074178100C1B0A9 /* include in Resources */ = {isa = PBXBuildFile; fileRef = DB130E012074178000C1B0A9 /* include */; };
+		DB130E042074178100C1B0A9 /* lib in Resources */ = {isa = PBXBuildFile; fileRef = DB130E022074178000C1B0A9 /* lib */; };
 		DBFD7CC920474E5600A6E2C9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFD7CC820474E5600A6E2C9 /* AppDelegate.m */; };
 		DBFD7CCC20474E5600A6E2C9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFD7CCB20474E5600A6E2C9 /* ViewController.m */; };
 		DBFD7CCF20474E5600A6E2C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBFD7CCD20474E5600A6E2C9 /* Main.storyboard */; };
@@ -54,6 +56,8 @@
 		99EC9DBC2058EF2E00894B9E /* badcrate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = badcrate.png; sourceTree = "<group>"; };
 		A543B8DC2056074200ECE7F8 /* Game.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Game.mm; sourceTree = "<group>"; };
 		A543B8DE2056076900ECE7F8 /* Game.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
+		DB130E012074178000C1B0A9 /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; path = include; sourceTree = "<group>"; };
+		DB130E022074178000C1B0A9 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
 		DBFD7CC420474E5600A6E2C9 /* Assignment2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Assignment2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBFD7CC720474E5600A6E2C9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DBFD7CC820474E5600A6E2C9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -77,9 +81,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DB130E002074171000C1B0A9 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				DB130E012074178000C1B0A9 /* include */,
+				DB130E022074178000C1B0A9 /* lib */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
 		DBFD7CBB20474E5600A6E2C9 = {
 			isa = PBXGroup;
 			children = (
+				DB130E002074171000C1B0A9 /* Libraries */,
 				DBFD7CC620474E5600A6E2C9 /* Assignment2 */,
 				DBFD7CC520474E5600A6E2C9 /* Products */,
 			);
@@ -192,12 +206,14 @@
 				9924948A205A41B30015EEA7 /* Shader2D.fsh in Resources */,
 				99EC9DBD2058EF2E00894B9E /* badcrate.png in Resources */,
 				DBFD7CD420474E5600A6E2C9 /* LaunchScreen.storyboard in Resources */,
+				DB130E032074178100C1B0A9 /* include in Resources */,
 				DBFD7CD120474E5600A6E2C9 /* Assets.xcassets in Resources */,
 				99EC9DBB2058EE9000894B9E /* Shader.vsh in Resources */,
 				99249495205A48F80015EEA7 /* kching.jpg in Resources */,
 				9976C6552058E31E00E26F2D /* crate.jpg in Resources */,
 				DBFD7CCF20474E5600A6E2C9 /* Main.storyboard in Resources */,
 				9924948B205A41B30015EEA7 /* Shader2D.vsh in Resources */,
+				DB130E042074178100C1B0A9 /* lib in Resources */,
 				99EC9DBA2058EE9000894B9E /* Shader.fsh in Resources */,
 				99249493205A47F40015EEA7 /* color.jpg in Resources */,
 				9924948D205A45F50015EEA7 /* groovy.jpg in Resources */,
@@ -356,9 +372,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8NFNE4TC77;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/Libraries/include";
 				INFOPLIST_FILE = Assignment2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/Libraries/lib";
 				PRODUCT_BUNDLE_IDENTIFIER = btechgames.bcit.ca.Assignment2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -371,9 +389,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8NFNE4TC77;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/Libraries/include";
 				INFOPLIST_FILE = Assignment2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/Libraries/lib";
 				PRODUCT_BUNDLE_IDENTIFIER = btechgames.bcit.ca.Assignment2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
