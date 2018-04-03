@@ -20,11 +20,11 @@ static bool vertWalls[4][5] =
 
 static bool horizWalls[5][4] =
 {
-    {false, true, true, true},
+    {true, true, true, true},
     {false, false, true, false},
     {false, false, false, false},
     {false, true, false, false},
-    {true, true, true, false}
+    {true, true, true, true}
 };
 
 enum Texture
@@ -56,7 +56,7 @@ enum ModelType
         
         [self setModels];
         
-        [self makeCube:1 y:1 z:0 t:texCube];
+        [self makeCube:0.5 y:0.5 z:0 t:texCube];
     }
     return self;
 }
@@ -68,7 +68,8 @@ enum ModelType
     lastTime = currentTime;
     
     //deal with spinning cube rotation
-    
+    int rot = 0.001f * timeElapsed;
+    [spinCube setPosition:GLKMatrix4Rotate(spinCube.position, rot, 0, 1, 0)];
 }
 
 - (void)move:(float)x y:(float)y
