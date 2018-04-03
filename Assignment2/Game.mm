@@ -8,6 +8,7 @@
 
 #import "Game.h"
 #include <chrono>
+#include "GLESRenderer.hpp"
 
 static bool vertWalls[4][5] =
 {
@@ -33,7 +34,7 @@ enum Texture
 
 enum ModelType
 {
-    post, tile, vWall, hWall, cube
+    vWall, hWall, tile, post, cube
 };
 
 @implementation Game
@@ -42,6 +43,7 @@ enum ModelType
     
     float yRotate;
     Model* spinCube;
+    GLESRenderer glesRenderer;
 }
 
 - (id)init
@@ -51,7 +53,7 @@ enum ModelType
     {
         rows = 4;
         cols = 4;
-
+        
         [self setModels];
         
         [self makeCube:1 y:1 z:0 t:texCube];
@@ -98,7 +100,7 @@ enum ModelType
             [self makeModel:tile x:offX+0.5 y:offY+0.5 z:-1 t:texTile];
             
             //vertical walls
-            if(vertWalls[(int)offX][(int)offY])
+            if(vertWalls[(int)offY][(int)offX])
             {
                 Texture wallTex = [self whichTexture:true x:(int)offX y:(int)offY];
                 [self makeModel:vWall x:offX-0.025 y:offY+0.5 z:0 t:wallTex];
@@ -112,7 +114,7 @@ enum ModelType
             }
             
             //horizontal walls
-            if(horizWalls[(int)offX][(int)offY])
+            if(horizWalls[(int)offY][(int)offX])
             {
                 Texture wallTex = [self whichTexture:false x:(int)offX y:(int)offY];
                 [self makeModel:hWall x:offX+0.5 y:offY-0.025 z:0 t:wallTex];
@@ -130,17 +132,17 @@ enum ModelType
         [self makeModel:post x:offX y:rows z:0 t:texPost];
         
         //missing row of horizontal walls
-        if(horizWalls[(int)offX][rows])
+        if(horizWalls[rows][(int)offX])
         {
             Texture wallTex = [self whichTexture:false x:(int)offX y:rows];
-            [self makeModel:hWall x:offX y:rows-0.025 z:0 t:wallTex];
+            [self makeModel:hWall x:offX+0.5 y:rows-0.025 z:0 t:wallTex];
             
             if(wallTex == texWallLeft)
                 wallTex = texWallRight;
             else if(wallTex == texWallRight)
                 wallTex = texWallLeft;
             
-            [self makeModel:hWall x:offX y:rows+0.025 z:0 t:wallTex];
+            [self makeModel:hWall x:offX+0.5 y:rows+0.025 z:0 t:wallTex];
         }
     }
     
@@ -150,17 +152,17 @@ enum ModelType
         [self makeModel:post x:cols y:offY z:0 t:texPost];
         
         //missing column of vertical walls
-        if(vertWalls[cols][(int)offY])
+        if(vertWalls[(int)offY][cols])
         {
             Texture wallTex = [self whichTexture:true x:cols y:(int)offY];
-            [self makeModel:vWall x:cols-0.025 y:offY z:0 t:wallTex];
+            [self makeModel:vWall x:cols-0.025 y:offY+0.5 z:0 t:wallTex];
             
             if(wallTex == texWallLeft)
                 wallTex = texWallRight;
             else if(wallTex == texWallRight)
                 wallTex = texWallLeft;
             
-            [self makeModel:vWall x:cols+0.025 y:offY z:0 t:wallTex];
+            [self makeModel:vWall x:cols+0.025 y:offY+0.5 z:0 t:wallTex];
         }
     }
     
@@ -199,28 +201,17 @@ enum ModelType
             break;
     }
     
-    switch(type)
-    {
-        case post:
-            [model setVertices:[ModelGenerator postVerts]];
-            break;
-        case tile:
-            [model setVertices:[ModelGenerator tileVerts]];
-            break;
-        case vWall:
-            [model setVertices:[ModelGenerator vertWallVerts]];
-            break;
-        case hWall:
-            [model setVertices:[ModelGenerator horizWallVerts]];
-            break;
-        case cube:
-            [model setVertices:[ModelGenerator cubeVerts]];
-            break;
-    }
+    float* vertices;
+    float* normals;
+    float* texCoords;
+    int* indices;
     
-    [model setNormals:[ModelGenerator cubeNormals]];
-    [model setTexCoords:[ModelGenerator cubeTex]];
-    [model setIndices:[ModelGenerator cubeInds]];
+    model = [[Model alloc] init];
+    [model setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices, (int)type))];
+    [model setVertices:vertices];
+    [model setNormals:normals];
+    [model setTexCoords:texCoords];
+    [model setIndices:indices];
     [model setPosition:GLKMatrix4Translate(GLKMatrix4Identity, xPos, zPos, yPos)];
     
     [Renderer addModel:model texture:fileName];
@@ -263,11 +254,17 @@ enum ModelType
 {
     NSString* fileName = @"crate.jpg";
     spinCube = [[Model alloc] init];
-
-    [spinCube setVertices:[ModelGenerator cubeVerts]];
-    [spinCube setNormals:[ModelGenerator cubeNormals]];
-    [spinCube setTexCoords:[ModelGenerator cubeTex]];
-    [spinCube setIndices:[ModelGenerator cubeInds]];
+    
+    float* vertices;
+    float* normals;
+    float* texCoords;
+    int* indices;
+    
+    [spinCube setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices, (int)cube))];
+    [spinCube setVertices:vertices];
+    [spinCube setNormals:normals];
+    [spinCube setTexCoords:texCoords];
+    [spinCube setIndices:indices];
     [spinCube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, xPos, zPos, yPos)];
     
     [Renderer addModel:spinCube texture:fileName];
