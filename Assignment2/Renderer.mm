@@ -98,7 +98,7 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
     EnvironmentController* e = [[EnvironmentController alloc] init];
     [e toggleFog];
     
-    [Renderer moveCamera:3 y:2 z:0];
+    [Renderer moveCamera:3.5 y:0.2 z:3.5];
 }
 
 + (void)close {
