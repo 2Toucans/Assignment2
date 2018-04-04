@@ -8,8 +8,13 @@
 
 #import "ViewController.h"
 #import "Renderer.h"
+#import "EnvironmentController.h"
 
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet UISwitch *fogSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *dayNightSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *spotlightSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *fogStyleSwitch;
 
 @end
 
@@ -17,7 +22,25 @@
 {
     CGPoint swipePos, rotatePos;
     Game* game;
+    EnvironmentController* ec;
 }
+
+- (IBAction)fogToggled:(id)sender {
+    [ec toggleFog];
+}
+
+- (IBAction)dayToggled:(id)sender {
+    [ec toggleDay];
+}
+
+- (IBAction)spotlightToggled:(id)sender {
+    [ec toggleSpotLight];
+}
+
+- (IBAction)fogStyleToggled:(id)sender {
+    [ec toggleFogType];
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -26,6 +49,7 @@
     [Renderer setup:view];
     
     game = [[Game alloc] init];
+    ec = [[EnvironmentController alloc] init];
 }
 
 - (void)didReceiveMemoryWarning {
