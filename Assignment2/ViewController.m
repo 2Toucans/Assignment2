@@ -145,7 +145,7 @@
 
 - (void) update
 {
-    [game update];
+    [game update:_controllingModel];
 }
 
 - (void)glkView:(GLKView*)view drawInRect:(CGRect)rect
