@@ -25,7 +25,7 @@
 		A543B8DD2056074200ECE7F8 /* Game.mm in Sources */ = {isa = PBXBuildFile; fileRef = A543B8DC2056074200ECE7F8 /* Game.mm */; };
 		DB130E032074178100C1B0A9 /* include in Resources */ = {isa = PBXBuildFile; fileRef = DB130E012074178000C1B0A9 /* include */; };
 		DB130E042074178100C1B0A9 /* lib in Resources */ = {isa = PBXBuildFile; fileRef = DB130E022074178000C1B0A9 /* lib */; };
-		DB725AD9207545740014B3B6 /* Collisions.m in Sources */ = {isa = PBXBuildFile; fileRef = DB725AD8207545740014B3B6 /* Collisions.m */; };
+		DB725AD9207545740014B3B6 /* Collisions.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB725AD8207545740014B3B6 /* Collisions.mm */; };
 		DB725ADD20757B830014B3B6 /* Horse.tga in Resources */ = {isa = PBXBuildFile; fileRef = DB725ADB20757B830014B3B6 /* Horse.tga */; };
 		DB725ADE20757B830014B3B6 /* horse.obj in Resources */ = {isa = PBXBuildFile; fileRef = DB725ADC20757B830014B3B6 /* horse.obj */; };
 		DBFD7CC920474E5600A6E2C9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFD7CC820474E5600A6E2C9 /* AppDelegate.m */; };
@@ -61,7 +61,7 @@
 		A543B8DE2056076900ECE7F8 /* Game.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		DB130E012074178000C1B0A9 /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; path = include; sourceTree = "<group>"; };
 		DB130E022074178000C1B0A9 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
-		DB725AD8207545740014B3B6 /* Collisions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Collisions.m; sourceTree = "<group>"; };
+		DB725AD8207545740014B3B6 /* Collisions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Collisions.mm; sourceTree = "<group>"; };
 		DB725ADA207549450014B3B6 /* Collisions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Collisions.h; sourceTree = "<group>"; };
 		DB725ADB20757B830014B3B6 /* Horse.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = Horse.tga; sourceTree = "<group>"; };
 		DB725ADC20757B830014B3B6 /* horse.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = horse.obj; sourceTree = "<group>"; };
@@ -150,7 +150,7 @@
 				3D91A22D2059AFCC0005BAB9 /* Light.h */,
 				99249485205A2EB30015EEA7 /* EnvironmentController.m */,
 				99249487205A2EBE0015EEA7 /* EnvironmentController.h */,
-				DB725AD8207545740014B3B6 /* Collisions.m */,
+				DB725AD8207545740014B3B6 /* Collisions.mm */,
 				DB725ADA207549450014B3B6 /* Collisions.h */,
 			);
 			path = Assignment2;
@@ -249,7 +249,7 @@
 				A543B8DD2056074200ECE7F8 /* Game.mm in Sources */,
 				99EC9DB72058EE7E00894B9E /* GLESRenderer.cpp in Sources */,
 				99249486205A2EB30015EEA7 /* EnvironmentController.m in Sources */,
-				DB725AD9207545740014B3B6 /* Collisions.m in Sources */,
+				DB725AD9207545740014B3B6 /* Collisions.mm in Sources */,
 				DBFD7CC920474E5600A6E2C9 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

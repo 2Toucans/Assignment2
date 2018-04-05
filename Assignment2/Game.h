@@ -12,6 +12,8 @@
 #import <Foundation/Foundation.h>
 #include "Renderer.h"
 #import <GLKit/GLKit.h>
+#include "Collisions.h"
+#import <Box2D/Box2D.h>
 
 @interface Game : NSObject
 {
