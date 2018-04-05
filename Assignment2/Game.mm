@@ -77,7 +77,7 @@ enum ModelType
     float rot = 0.001f * timeElapsed;
     [spinCube setPosition:GLKMatrix4Rotate(spinCube.position, rot, 0, 1, 0)];
     
-    //[self moveHorse];
+    [self moveHorse];
     
     [collide update:timeElapsed];
     
@@ -341,7 +341,7 @@ enum ModelType
 
 - (void)moveHorse
 {
-    [collide pushHorse:1.0f y:0.0f];
+    [collide pushHorse:-1.0f y:-1.0f];
 }
 
 - (Boolean)playerIsOnModelTile
