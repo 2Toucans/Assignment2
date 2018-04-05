@@ -15,12 +15,15 @@
 @property (weak, nonatomic) IBOutlet UISwitch *dayNightSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *spotlightSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *fogStyleSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *controlSwitch;
+@property Boolean controllingModel;
 
 @end
 
 @implementation ViewController
 {
     CGPoint swipePos, rotatePos;
+    float pinchScale;
     Game* game;
     EnvironmentController* ec;
 }
@@ -31,6 +34,13 @@
 
 - (IBAction)dayToggled:(id)sender {
     [ec toggleDay];
+}
+
+- (IBAction)controlToggled:(id)sender {
+    if (_controllingModel || [game playerIsOnModelTile]) {
+        _controllingModel = !_controllingModel;
+    }
+    [_controlSwitch setOn:!_controllingModel];
 }
 
 - (IBAction)spotlightToggled:(id)sender {
@@ -69,7 +79,14 @@
     float x = point.x - swipePos.x;
     float y = point.y - swipePos.y;
     
-    [game move:x y:y];
+    if (!_controllingModel)
+    {
+        [game move:x y:y];
+    }
+    else
+    {
+        [game moveModel:x y:y];
+    }
     
     swipePos = point;
 }
@@ -84,21 +101,46 @@
     CGPoint point = [sender translationInView:self.view];
     
     float x = point.x - rotatePos.x;
-    
-    [game rotate:x];
+
+    if (!_controllingModel)
+    {
+        [game rotate:x];
+    }
+    else
+    {
+        [game rotateModel:x];
+    }
     
     rotatePos = point;
 }
 
 - (IBAction)tap:(id)sender
 {
-    [game reset];
+    // Used to call [game reset]
+    // Now instead toggles the model moving autonomously
+    [game toggleModelMovement];
+    
 }
 
 - (IBAction)doubleTap:(id)sender
 {
     //trigger console show
     //tell game to update map
+}
+
+- (IBAction)pinch:(UIPinchGestureRecognizer *)sender {
+    if(sender.state == UIGestureRecognizerStateBegan)
+    {
+        pinchScale = 1.0;
+    }
+    
+    float zoom = sender.scale - pinchScale;
+    
+    if (_controllingModel) {
+        [game zoomModel:(1.0 + zoom * 0.5)];
+    }
+    
+    pinchScale = sender.scale;
 }
 
 - (void) update

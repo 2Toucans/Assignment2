@@ -26,7 +26,17 @@
 
 - (void)rotate:(float)y;
 
+- (void)moveModel:(float)x y:(float)y;
+
+- (void)rotateModel:(float)y;
+
+- (void)zoomModel:(float)zoom;
+
 - (void)reset;
+
+- (Boolean) playerIsOnModelTile;
+
+- (void)toggleModelMovement;
 
 @end
 

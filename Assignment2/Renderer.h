@@ -31,6 +31,8 @@
 
 + (void)rotateCamera:(float)angle x:(float)x y:(float)y z:(float)z;
 
++ (GLKMatrix4)getCameraMatrix;
+
 + (void)setFog:(bool)enabled type:(int)type color:(GLKVector3)color;
 
 + (void)setBackground: (GLKVector3)color;
