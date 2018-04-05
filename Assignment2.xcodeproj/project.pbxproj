@@ -27,9 +27,10 @@
 		A543B8DD2056074200ECE7F8 /* Game.mm in Sources */ = {isa = PBXBuildFile; fileRef = A543B8DC2056074200ECE7F8 /* Game.mm */; };
 		DB130E032074178100C1B0A9 /* include in Resources */ = {isa = PBXBuildFile; fileRef = DB130E012074178000C1B0A9 /* include */; };
 		DB130E042074178100C1B0A9 /* lib in Resources */ = {isa = PBXBuildFile; fileRef = DB130E022074178000C1B0A9 /* lib */; };
-		DB725AD9207545740014B3B6 /* Collisions.m in Sources */ = {isa = PBXBuildFile; fileRef = DB725AD8207545740014B3B6 /* Collisions.m */; };
+		DB725AD9207545740014B3B6 /* Collisions.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB725AD8207545740014B3B6 /* Collisions.mm */; };
 		DB725ADD20757B830014B3B6 /* Horse.tga in Resources */ = {isa = PBXBuildFile; fileRef = DB725ADB20757B830014B3B6 /* Horse.tga */; };
 		DB725ADE20757B830014B3B6 /* horse.obj in Resources */ = {isa = PBXBuildFile; fileRef = DB725ADC20757B830014B3B6 /* horse.obj */; };
+		DB725AE12075BCD10014B3B6 /* libBox2D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB725AE02075BCD10014B3B6 /* libBox2D.a */; };
 		DBFD7CC920474E5600A6E2C9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFD7CC820474E5600A6E2C9 /* AppDelegate.m */; };
 		DBFD7CCC20474E5600A6E2C9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFD7CCB20474E5600A6E2C9 /* ViewController.m */; };
 		DBFD7CCF20474E5600A6E2C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBFD7CCD20474E5600A6E2C9 /* Main.storyboard */; };
@@ -66,10 +67,11 @@
 		A543B8DE2056076900ECE7F8 /* Game.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		DB130E012074178000C1B0A9 /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; path = include; sourceTree = "<group>"; };
 		DB130E022074178000C1B0A9 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
-		DB725AD8207545740014B3B6 /* Collisions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Collisions.m; sourceTree = "<group>"; };
+		DB725AD8207545740014B3B6 /* Collisions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Collisions.mm; sourceTree = "<group>"; };
 		DB725ADA207549450014B3B6 /* Collisions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Collisions.h; sourceTree = "<group>"; };
 		DB725ADB20757B830014B3B6 /* Horse.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = Horse.tga; sourceTree = "<group>"; };
 		DB725ADC20757B830014B3B6 /* horse.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = horse.obj; sourceTree = "<group>"; };
+		DB725AE02075BCD10014B3B6 /* libBox2D.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libBox2D.a; path = Libraries/lib/libBox2D.a; sourceTree = "<group>"; };
 		DBFD7CC420474E5600A6E2C9 /* Assignment2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Assignment2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBFD7CC720474E5600A6E2C9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DBFD7CC820474E5600A6E2C9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB725AE12075BCD10014B3B6 /* libBox2D.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,12 +105,21 @@
 			path = Libraries;
 			sourceTree = "<group>";
 		};
+		DB725ADF2075BCD10014B3B6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DB725AE02075BCD10014B3B6 /* libBox2D.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		DBFD7CBB20474E5600A6E2C9 = {
 			isa = PBXGroup;
 			children = (
 				DB130E002074171000C1B0A9 /* Libraries */,
 				DBFD7CC620474E5600A6E2C9 /* Assignment2 */,
 				DBFD7CC520474E5600A6E2C9 /* Products */,
+				DB725ADF2075BCD10014B3B6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -156,9 +168,9 @@
 				3D91A22D2059AFCC0005BAB9 /* Light.h */,
 				99249485205A2EB30015EEA7 /* EnvironmentController.m */,
 				99249487205A2EBE0015EEA7 /* EnvironmentController.h */,
+				DB725AD8207545740014B3B6 /* Collisions.mm */,
 				3DDEF4A02075754B004C2B58 /* ModelReader.m */,
 				3DDEF4A220757554004C2B58 /* ModelReader.h */,
-				DB725AD8207545740014B3B6 /* Collisions.m */,
 				DB725ADA207549450014B3B6 /* Collisions.h */,
 			);
 			path = Assignment2;
@@ -259,7 +271,7 @@
 				A543B8DD2056074200ECE7F8 /* Game.mm in Sources */,
 				99EC9DB72058EE7E00894B9E /* GLESRenderer.cpp in Sources */,
 				99249486205A2EB30015EEA7 /* EnvironmentController.m in Sources */,
-				DB725AD9207545740014B3B6 /* Collisions.m in Sources */,
+				DB725AD9207545740014B3B6 /* Collisions.mm in Sources */,
 				DBFD7CC920474E5600A6E2C9 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -400,7 +412,10 @@
 				INFOPLIST_FILE = Assignment2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/Libraries/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/Libraries/lib",
+					"$(PROJECT_DIR)/Libraries/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = btechgames.bcit.ca.Assignment2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -417,7 +432,10 @@
 				INFOPLIST_FILE = Assignment2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/Libraries/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/Libraries/lib",
+					"$(PROJECT_DIR)/Libraries/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = btechgames.bcit.ca.Assignment2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";

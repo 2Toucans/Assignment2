@@ -10,8 +10,9 @@
 #define Game_h
 
 #import <Foundation/Foundation.h>
-#include "Renderer.h"
+#import "Renderer.h"
 #import <GLKit/GLKit.h>
+#import "Collisions.h"
 
 @interface Game : NSObject
 {

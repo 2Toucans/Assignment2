@@ -6,7 +6,6 @@
 //  Copyright © 2018 Aaron Freytag. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "Model.h"
 
 @implementation Model
