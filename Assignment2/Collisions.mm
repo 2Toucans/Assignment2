@@ -7,6 +7,7 @@
 //
 
 #import "Collisions.h"
+#include <Box2D/Box2D.h>
 
 @implementation Collisions
 {
@@ -83,9 +84,10 @@
     body->CreateFixture(&fixtureDef);
 }
 
-- (b2Vec2)horsePos
+- (GLKVector2)horsePos
 {
-    return horseBody->GetPosition();
+    GLKVector2 pos = GLKVector2Make(horseBody->GetPosition().x, horseBody->GetPosition().y);
+    return pos;
 }
 
 - (void)pushHorse:(float)xV y:(float)yV

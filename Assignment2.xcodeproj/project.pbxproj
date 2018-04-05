@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3D1E29E420589B3B007F70C0 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1E29E320589B3B007F70C0 /* Model.m */; };
+		3DDEF4A12075754B004C2B58 /* ModelReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DDEF4A02075754B004C2B58 /* ModelReader.m */; };
+		3DDEF4A42075A7BC004C2B58 /* Horse.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DDEF4A32075A7BB004C2B58 /* Horse.png */; };
 		9915794120575777006DAAD5 /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9915794020575777006DAAD5 /* Renderer.mm */; };
 		99249486205A2EB30015EEA7 /* EnvironmentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 99249485205A2EB30015EEA7 /* EnvironmentController.m */; };
 		9924948A205A41B30015EEA7 /* Shader2D.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 99249488205A41B30015EEA7 /* Shader2D.fsh */; };
@@ -28,6 +30,7 @@
 		DB725AD9207545740014B3B6 /* Collisions.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB725AD8207545740014B3B6 /* Collisions.mm */; };
 		DB725ADD20757B830014B3B6 /* Horse.tga in Resources */ = {isa = PBXBuildFile; fileRef = DB725ADB20757B830014B3B6 /* Horse.tga */; };
 		DB725ADE20757B830014B3B6 /* horse.obj in Resources */ = {isa = PBXBuildFile; fileRef = DB725ADC20757B830014B3B6 /* horse.obj */; };
+		DB725AE12075BCD10014B3B6 /* libBox2D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB725AE02075BCD10014B3B6 /* libBox2D.a */; };
 		DBFD7CC920474E5600A6E2C9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFD7CC820474E5600A6E2C9 /* AppDelegate.m */; };
 		DBFD7CCC20474E5600A6E2C9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFD7CCB20474E5600A6E2C9 /* ViewController.m */; };
 		DBFD7CCF20474E5600A6E2C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBFD7CCD20474E5600A6E2C9 /* Main.storyboard */; };
@@ -39,6 +42,9 @@
 /* Begin PBXFileReference section */
 		3D1E29E320589B3B007F70C0 /* Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
 		3D91A22D2059AFCC0005BAB9 /* Light.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Light.h; sourceTree = "<group>"; };
+		3DDEF4A02075754B004C2B58 /* ModelReader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModelReader.m; sourceTree = "<group>"; };
+		3DDEF4A220757554004C2B58 /* ModelReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModelReader.h; sourceTree = "<group>"; };
+		3DDEF4A32075A7BB004C2B58 /* Horse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Horse.png; sourceTree = "<group>"; };
 		9915794020575777006DAAD5 /* Renderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Renderer.mm; sourceTree = "<group>"; };
 		9915794220575793006DAAD5 /* Renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
 		99249485205A2EB30015EEA7 /* EnvironmentController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnvironmentController.m; sourceTree = "<group>"; };
@@ -65,6 +71,7 @@
 		DB725ADA207549450014B3B6 /* Collisions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Collisions.h; sourceTree = "<group>"; };
 		DB725ADB20757B830014B3B6 /* Horse.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = Horse.tga; sourceTree = "<group>"; };
 		DB725ADC20757B830014B3B6 /* horse.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = horse.obj; sourceTree = "<group>"; };
+		DB725AE02075BCD10014B3B6 /* libBox2D.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libBox2D.a; path = Libraries/lib/libBox2D.a; sourceTree = "<group>"; };
 		DBFD7CC420474E5600A6E2C9 /* Assignment2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Assignment2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBFD7CC720474E5600A6E2C9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DBFD7CC820474E5600A6E2C9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -82,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB725AE12075BCD10014B3B6 /* libBox2D.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,12 +105,21 @@
 			path = Libraries;
 			sourceTree = "<group>";
 		};
+		DB725ADF2075BCD10014B3B6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DB725AE02075BCD10014B3B6 /* libBox2D.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		DBFD7CBB20474E5600A6E2C9 = {
 			isa = PBXGroup;
 			children = (
 				DB130E002074171000C1B0A9 /* Libraries */,
 				DBFD7CC620474E5600A6E2C9 /* Assignment2 */,
 				DBFD7CC520474E5600A6E2C9 /* Products */,
+				DB725ADF2075BCD10014B3B6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -118,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				DB725ADC20757B830014B3B6 /* horse.obj */,
+				3DDEF4A32075A7BB004C2B58 /* Horse.png */,
 				DB725ADB20757B830014B3B6 /* Horse.tga */,
 				99EC9DB62058EE7D00894B9E /* GLESRenderer.cpp */,
 				99EC9DB52058EE7D00894B9E /* GLESRenderer.hpp */,
@@ -151,6 +169,8 @@
 				99249485205A2EB30015EEA7 /* EnvironmentController.m */,
 				99249487205A2EBE0015EEA7 /* EnvironmentController.h */,
 				DB725AD8207545740014B3B6 /* Collisions.mm */,
+				3DDEF4A02075754B004C2B58 /* ModelReader.m */,
+				3DDEF4A220757554004C2B58 /* ModelReader.h */,
 				DB725ADA207549450014B3B6 /* Collisions.h */,
 			);
 			path = Assignment2;
@@ -219,6 +239,7 @@
 				99EC9DBD2058EF2E00894B9E /* badcrate.png in Resources */,
 				DBFD7CD420474E5600A6E2C9 /* LaunchScreen.storyboard in Resources */,
 				DB130E032074178100C1B0A9 /* include in Resources */,
+				3DDEF4A42075A7BC004C2B58 /* Horse.png in Resources */,
 				DBFD7CD120474E5600A6E2C9 /* Assets.xcassets in Resources */,
 				99EC9DBB2058EE9000894B9E /* Shader.vsh in Resources */,
 				99249495205A48F80015EEA7 /* kching.jpg in Resources */,
@@ -243,6 +264,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBFD7CCC20474E5600A6E2C9 /* ViewController.m in Sources */,
+				3DDEF4A12075754B004C2B58 /* ModelReader.m in Sources */,
 				DBFD7CD720474E5600A6E2C9 /* main.m in Sources */,
 				9915794120575777006DAAD5 /* Renderer.mm in Sources */,
 				3D1E29E420589B3B007F70C0 /* Model.m in Sources */,
@@ -390,7 +412,10 @@
 				INFOPLIST_FILE = Assignment2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/Libraries/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/Libraries/lib",
+					"$(PROJECT_DIR)/Libraries/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = btechgames.bcit.ca.Assignment2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -407,7 +432,10 @@
 				INFOPLIST_FILE = Assignment2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/Libraries/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/Libraries/lib",
+					"$(PROJECT_DIR)/Libraries/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = btechgames.bcit.ca.Assignment2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";

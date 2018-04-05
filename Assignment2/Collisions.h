@@ -9,7 +9,7 @@
 #ifndef Collisions_h
 #define Collisions_h
 #import <Foundation/Foundation.h>
-#include <Box2D/Box2D.h>
+#include <GLKit/GLKit.h>
 
 @interface Collisions : NSObject
 {
@@ -22,7 +22,7 @@
 
 - (void)addBody:(float)xPos y:(float)yPos w:(float)width h:(float)height;
 
-- (b2Vec2)horsePos;
+- (GLKVector2)horsePos;
 
 @end
 
