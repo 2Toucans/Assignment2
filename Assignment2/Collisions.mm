@@ -13,29 +13,37 @@
 {
     b2World* world;
     b2Body* horseBody;
+    GLKVector2 horseMove;
 }
 
 - (id)init
 {
     if((self=[super init])){
         [self createWorld];
-        
     }
     return self;
 }
 
 - (void)update:(float)et
 {
+    GLKVector2 pos = GLKVector2Make(horseBody->GetPosition().x, horseBody->GetPosition().y);
     const float ts = 1.0f/60.0f;
+    float t = 0;
     
-    while(et >= ts)
+    while(t+ts <= ts)
     {
         world->Step(ts, 10, 10);
-        et -= ts;
+        t += ts;
     }
+    //NSLog(@"horsepos=%1.2f, %1.2f", pos.x, pos.y);
     
-    if(et > 0.0f)
-        world->Step(et, 10, 10);
+    if(et-t > 0.0f)
+        world->Step(et-t, 10, 10);
+    
+    //find the change in horse position
+    horseMove = GLKVector2Subtract(GLKVector2Make(horseBody->GetPosition().x, horseBody->GetPosition().y), pos);
+    
+    //NSLog(@"horsemove=%1.2f, %1.2f", horseMove.x, horseMove.y);
 }
 
 - (void)addHorse:(float)xPos y:(float)yPos w:(float)width h:(float)height
@@ -65,7 +73,7 @@
 {
     //define body and set parameters
     b2BodyDef bodyDef;
-    bodyDef.type = b2_dynamicBody;
+    bodyDef.type = b2_staticBody;
     bodyDef.position.Set(xPos, yPos);
     
     b2Body* body = world->CreateBody(&bodyDef);
@@ -84,17 +92,26 @@
     body->CreateFixture(&fixtureDef);
 }
 
-- (GLKVector2)horsePos
+- (GLKVector2)getHorsePos
 {
-    GLKVector2 pos = GLKVector2Make(horseBody->GetPosition().x, horseBody->GetPosition().y);
-    return pos;
+    return GLKVector2Make(horseBody->GetPosition().x, horseBody->GetPosition().y);
+}
+
+- (GLKVector2)getHorseMove
+{
+    return horseMove;
 }
 
 - (void)pushHorse:(float)xV y:(float)yV
 {
     const b2Vec2 pushVec = b2Vec2(xV, yV);
     
-    horseBody->ApplyForceToCenter(pushVec, true);
+    horseBody->SetLinearVelocity(pushVec);
+}
+
+- (void)turnHorse:(float)rads
+{
+    
 }
 
 - (void)createWorld

@@ -62,7 +62,7 @@ enum ModelType
         [self setModels];
         
         [self makeCube:0.5 y:0.5 z:0];
-        [self makeHorse:0.5 y:2.5 z:-0.48];
+        [self makeHorse:0.5 y:2 z:-0.48];
     }
     return self;
 }
@@ -79,9 +79,12 @@ enum ModelType
     
     //[self moveHorse];
     
-    //GLKVector2 horsePos = [collide horsePos];
-    //GLKVector2 move = horse.position
-    //[horse setPosition:GLKMatrix4Translate(horse.position, move.x, 0, move.y)];
+    [collide update:timeElapsed];
+    
+    GLKVector2 horseMove = GLKVector2DivideScalar([collide getHorseMove], 100);
+    
+    GLKMatrix4 moveM = GLKMatrix4Translate(GLKMatrix4Identity, horseMove.x, 0, horseMove.y);
+    [horseModel setPosition:GLKMatrix4Multiply(moveM, horseModel.position)];
 }
 
 - (void)move:(float)x y:(float)y
@@ -320,8 +323,12 @@ enum ModelType
 
     [Renderer addModel:horseModel texture:fileName];
     
-    [collide addHorse:xPos y:yPos w:0.3 h:0.4];
+    [collide addHorse:xPos y:yPos w:0.1 h:0.1];
 }
 
+- (void)moveHorse
+{
+    [collide pushHorse:1.0f y:0.0f];
+}
 
 @end
