@@ -7,6 +7,7 @@
 //
 
 #import "Game.h"
+#import "ModelReader.h"
 #include <chrono>
 #include "GLESRenderer.hpp"
 
@@ -29,7 +30,7 @@ static bool horizWalls[5][4] =
 
 enum Texture
 {
-    texWallBoth, texWallNone, texWallLeft, texWallRight, texPost, texTile, texCube
+    texWallBoth, texWallNone, texWallLeft, texWallRight, texPost, texTile
 };
 
 enum ModelType
@@ -43,6 +44,7 @@ enum ModelType
     
     float yRotate;
     Model* spinCube;
+    Model* horseModel;
     GLESRenderer glesRenderer;
 }
 
@@ -56,7 +58,8 @@ enum ModelType
         
         [self setModels];
         
-        [self makeCube:0.5 y:0.5 z:0 t:texCube];
+        [self makeCube:0.5 y:0.5 z:0];
+        [self makeHorse:0.5 y:2.5 z:-0.48];
     }
     return self;
 }
@@ -197,9 +200,6 @@ enum ModelType
         case texTile:
             fileName = @"tiger.jpg";
             break;
-        case texCube:
-            fileName = @"crate.jpg";
-            break;
     }
     
     float* vertices;
@@ -251,7 +251,7 @@ enum ModelType
 }
 
 //Makes the spinning cube and stores it
-- (void)makeCube:(float)xPos y:(float)yPos z:(float)zPos t:(Texture)tex
+- (void)makeCube:(float)xPos y:(float)yPos z:(float)zPos
 {
     NSString* fileName = @"crate.jpg";
     spinCube = [[Model alloc] init];
@@ -270,5 +270,20 @@ enum ModelType
     
     [Renderer addModel:spinCube texture:fileName];
 }
+
+//Makes the spinning cube and stores it
+- (void)makeHorse:(float)xPos y:(float)yPos z:(float)zPos
+{
+    NSString* fileName = @"Horse.png";
+    horseModel = [ModelReader loadModel:@"horse"];
+    
+    [horseModel setPosition:GLKMatrix4Translate(horseModel.position, xPos, zPos, yPos)];
+    horseModel.position = GLKMatrix4Scale(horseModel.position, 0.004, 0.004, 0.004);
+
+    [Renderer addModel:horseModel texture:fileName];
+    
+    //[collide addHorse:xPos y:yPos w:0.3 h:0.4];
+}
+
 
 @end

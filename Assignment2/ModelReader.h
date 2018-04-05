@@ -8,7 +8,7 @@
 
 #ifndef ModelReader_h
 #define ModelReader_h
-#import <Foundation.h>
+#import <Foundation/Foundation.h>
 #include "Model.h"
 
 @interface ModelReader : NSObject
