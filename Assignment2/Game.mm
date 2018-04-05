@@ -10,6 +10,7 @@
 #import "ModelReader.h"
 #include <chrono>
 #include "GLESRenderer.hpp"
+#include <stdlib.h>
 
 static bool vertWalls[4][5] =
 {
@@ -47,6 +48,7 @@ enum ModelType
     Model* horseModel;
     GLESRenderer glesRenderer;
     Collisions* collide;
+    GLKVector2 gravity;
 }
 
 - (id)init
@@ -63,11 +65,13 @@ enum ModelType
         
         [self makeCube:0.5 y:0.5 z:0];
         [self makeHorse:0.5 y:2 z:-0.48];
+        
+        gravity = GLKVector2Make(1, 1);
     }
     return self;
 }
 
-- (void)update
+- (void)update:(bool)control
 {
     auto currentTime = std::chrono::steady_clock::now();
     auto timeElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime-lastTime).count();
@@ -77,10 +81,50 @@ enum ModelType
     float rot = 0.001f * timeElapsed;
     [spinCube setPosition:GLKMatrix4Rotate(spinCube.position, rot, 0, 1, 0)];
     
+    //if you aren't controlling the horse, it will move by itself
+    if(!control)
+    {
+        int turn = arc4random_uniform(100);
+        NSLog(@"x %1.2f y %1.2f", gravity.x, gravity.y);
+        if(turn < 5)
+        {
+            float h = sqrt(gravity.x * gravity.x + gravity.y * gravity.y);
+            NSLog(@"h %1.2f", h);
+            float theta = atan(gravity.y/gravity.x);
+            NSLog(@"thetaI %1.2f", theta);
+            theta += M_PI/12;
+            NSLog(@"thetaF %1.2f", theta);
+            
+            gravity.x = h*cos(theta);
+            gravity.y = h*sin(theta);
+            
+            NSLog(@"x %1.2f y %1.2f", gravity.x, gravity.y);
+            
+            [collide pushHorse:gravity.x y:gravity.y];
+        }
+        else if(turn < 10)
+        {
+            float h = sqrt(gravity.x * gravity.x + gravity.y * gravity.y);
+            NSLog(@"h %1.2f", h);
+            float theta = tan(gravity.y/gravity.x);
+            NSLog(@"thetaI %1.2f", theta);
+            theta -= M_PI/12;
+            NSLog(@"thetaF %1.2f", theta);
+            
+            gravity.x = h*cos(theta);
+            gravity.y = h*sin(theta);
+            
+            NSLog(@"x %1.2f y %1.2f", gravity.x, gravity.y);
+            
+            [collide pushHorse:gravity.x y:gravity.y];
+        }
+    }
+    
+    //deal with collisions
     [collide update:timeElapsed];
     
+    //move horse based on gravity and collisions
     GLKVector2 horseMove = GLKVector2DivideScalar([collide getHorseMove], 100);
-    
     GLKMatrix4 moveM = GLKMatrix4Translate(GLKMatrix4Identity, horseMove.x, 0, horseMove.y);
     [horseModel setPosition:GLKMatrix4Multiply(moveM, horseModel.position)];
 }
@@ -96,6 +140,7 @@ enum ModelType
 }
 
 - (void)moveModel:(float)x y:(float)y {
+    gravity = GLKVector2Make(x, y);
     [collide pushHorse:x y:y];
 }
 

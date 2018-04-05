@@ -43,8 +43,6 @@
     
     //find the change in horse position
     horseMove = GLKVector2Subtract(GLKVector2Make(horseBody->GetPosition().x, horseBody->GetPosition().y), pos);
-    
-    NSLog(@"horsemove=%1.2f, %1.2f", horseMove.x, horseMove.y);
 }
 
 - (void)addHorse:(float)xPos y:(float)yPos w:(float)width h:(float)height
@@ -117,7 +115,7 @@
 
 - (void)createWorld
 {
-    b2Vec2 gravity = b2Vec2(0.0f, 0.0f);
+    b2Vec2 gravity = b2Vec2(1.0f, 1.0f);
     
     world = (b2World*)malloc(sizeof(b2World));
     world = new b2World(gravity);

@@ -20,7 +20,7 @@
     int rows, cols;
 }
 
-- (void)update;
+- (void)update:(bool)control;
 
 - (void)move:(float)x y:(float)y;
 
