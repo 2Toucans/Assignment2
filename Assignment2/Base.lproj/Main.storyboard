@@ -97,6 +97,7 @@
                             <outletCollection property="gestureRecognizers" destination="y0b-h8-2aE" appends="YES" id="k0v-34-Q8o"/>
                             <outletCollection property="gestureRecognizers" destination="wtM-7w-GqF" appends="YES" id="chi-Vq-hbT"/>
                             <outletCollection property="gestureRecognizers" destination="Wg4-gt-a5g" appends="YES" id="pM7-1h-pYZ"/>
+                            <outletCollection property="gestureRecognizers" destination="xMm-Mc-UBG" appends="YES" id="8KB-5z-0hl"/>
                         </connections>
                     </glkView>
                     <connections>
@@ -128,7 +129,11 @@
                         <action selector="tap:" destination="V7m-aQ-9JQ" id="2tf-2q-r0G"/>
                     </connections>
                 </tapGestureRecognizer>
-                <pinchGestureRecognizer id="xMm-Mc-UBG"/>
+                <pinchGestureRecognizer id="xMm-Mc-UBG">
+                    <connections>
+                        <action selector="pinch:" destination="V7m-aQ-9JQ" id="Hhw-Fz-a1b"/>
+                    </connections>
+                </pinchGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="160.80000000000001" y="97.601199400299862"/>
         </scene>
