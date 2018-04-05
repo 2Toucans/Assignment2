@@ -134,6 +134,16 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
         for (int i = 0; i < [models count]; i++) {
             Model* m = models[i];
             
+            GLuint vao;
+            GLuint vbos[3];
+            GLuint evbo;
+            
+            // Generate the vertex buffers and arrays
+            glGenVertexArrays(1, &vao);
+            
+            glGenBuffers(3, vbos);
+            glGenBuffers(1, &evbo);
+            
             GLKMatrix4 mvpMatrix = m.position;
             normalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(mvpMatrix), NULL);
             glUniformMatrix4fv(uniforms[UNIFORM_M_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
@@ -142,9 +152,7 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
             perspectiveMatrix = GLKMatrix4MakePerspective(60.0f * M_PI / 180.0f, aspect, 0.01f, 200.0f);
             
             mvpMatrix = GLKMatrix4Multiply(GLKMatrix4Invert(cameraMatrix, FALSE), mvpMatrix);
-            
             glUniformMatrix4fv(uniforms[UNIFORM_MV_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
-            
             mvpMatrix = GLKMatrix4Multiply(perspectiveMatrix, mvpMatrix);
 
             glUniformMatrix4fv(uniforms[UNIFORM_MVP_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
@@ -152,15 +160,30 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
             
             glViewport(0, 0, (int)view.drawableWidth, (int)view.drawableHeight);
             
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), m.vertices);
+            glBindVertexArray(vao);
+            
+            glBindBuffer(GL_ARRAY_BUFFER, vbos[0]);
+            glBufferData(GL_ARRAY_BUFFER, m.numIndices * sizeof(float) * 3, m.vertices, GL_STATIC_DRAW);
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
             glEnableVertexAttribArray(0);
+            
             glVertexAttrib4f(1, 1.0f, 1.0f, 1.0f, 1.0f);
-            glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), m.normals);
+            
+            glBindBuffer(GL_ARRAY_BUFFER, vbos[1]);
+            glBufferData(GL_ARRAY_BUFFER, m.numIndices * sizeof(float) * 3, m.normals, GL_STATIC_DRAW);
+            glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
             glEnableVertexAttribArray(2);
-            glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), m.texCoords);
+            
+            glBindBuffer(GL_ARRAY_BUFFER, vbos[2]);
+            glBufferData(GL_ARRAY_BUFFER, m.numIndices * sizeof(float) * 2, m.texCoords, GL_STATIC_DRAW);
+            glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
             glEnableVertexAttribArray(3);
+
             glUniformMatrix4fv(uniforms[UNIFORM_MVP_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
-            glDrawElements(GL_TRIANGLES, m.numIndices, GL_UNSIGNED_INT, m.indices);
+            
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, evbo);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, m.numIndices * sizeof(int), m.indices, GL_STATIC_DRAW);
+            glDrawElements(GL_TRIANGLES, m.numIndices, GL_UNSIGNED_INT, 0);
         }
     }];
     
@@ -173,6 +196,7 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
         [models setObject:[[NSMutableArray alloc] init] forKey:texture];
         [Renderer loadTexture:texture];
     }
+    
     [models[texture] addObject:model];
 }
 
