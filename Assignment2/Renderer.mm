@@ -216,6 +216,10 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
     cameraMatrix = GLKMatrix4Rotate(cameraMatrix, -angle, x, y, z);
 }
 
++ (GLKMatrix4)getCameraMatrix {
+    return cameraMatrix;
+}
+
 + (bool)setupShaders {
     char *vShaderStr = glesRenderer.LoadShaderFile([[[NSBundle mainBundle] pathForResource: [[NSString stringWithUTF8String:"Shader.vsh"] stringByDeletingPathExtension] ofType:[[NSString stringWithUTF8String:"Shader.vsh"] pathExtension]] cStringUsingEncoding:1]);
     char *fShaderStr = glesRenderer.LoadShaderFile([[[NSBundle mainBundle] pathForResource: [[NSString stringWithUTF8String:"Shader.fsh"] stringByDeletingPathExtension] ofType:[[NSString stringWithUTF8String:"Shader.fsh"] pathExtension]] cStringUsingEncoding:1]);

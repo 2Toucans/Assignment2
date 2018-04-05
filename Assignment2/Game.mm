@@ -97,6 +97,19 @@ enum ModelType
     [Renderer rotateCamera:y/100 x:0 y:1 z:0];
 }
 
+- (void)moveModel:(float)x y:(float)y {
+    [collide pushHorse:x y:y];
+}
+
+- (void)rotateModel:(float)y
+{
+    horseModel.position = GLKMatrix4Rotate(horseModel.position, y/100, 0, 1, 0);
+}
+
+- (void)zoomModel:(float)zoom {
+    horseModel.position = GLKMatrix4Scale(horseModel.position, zoom, zoom, zoom);
+}
+
 - (void)reset
 {
     //[Renderer setPosition:0 y:0 z:0] something like this
@@ -329,6 +342,20 @@ enum ModelType
 - (void)moveHorse
 {
     [collide pushHorse:-1.0f y:-1.0f];
+}
+
+- (Boolean)playerIsOnModelTile
+{
+    int px = (int)([Renderer getCameraMatrix].m30);
+    int py = (int)([Renderer getCameraMatrix].m32);
+    int mx = (int)(horseModel.position.m30);
+    int my = (int)(horseModel.position.m32);
+    return px == mx && py == my;
+}
+
+- (void)toggleModelMovement
+{
+    // Does nothing currently
 }
 
 @end
