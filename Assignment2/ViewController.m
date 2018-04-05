@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UISwitch *dayNightSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *spotlightSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *fogStyleSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *controlSwitch;
 
 @end
 
@@ -31,6 +32,9 @@
 
 - (IBAction)dayToggled:(id)sender {
     [ec toggleDay];
+}
+
+- (IBAction)controlToggled:(id)sender {
 }
 
 - (IBAction)spotlightToggled:(id)sender {
@@ -92,7 +96,9 @@
 
 - (IBAction)tap:(id)sender
 {
-    [game reset];
+    // Used to call [game reset]
+    // Now instead toggles the model moving autonomously
+    
 }
 
 - (IBAction)doubleTap:(id)sender

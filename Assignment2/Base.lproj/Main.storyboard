@@ -74,6 +74,20 @@
                                     <action selector="dayToggled:" destination="V7m-aQ-9JQ" eventType="valueChanged" id="l22-Er-M6I"/>
                                 </connections>
                             </switch>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NhY-HQ-ulL" userLabel="ControlSwitch">
+                                <rect key="frame" x="16" y="616" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="controlToggled:" destination="V7m-aQ-9JQ" eventType="valueChanged" id="Hz1-qM-qoa"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Control Model" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yym-Rw-d0l" userLabel="Control">
+                                <rect key="frame" x="71" y="621" width="126" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="zcQ-Y2-2tJ"/>
@@ -87,6 +101,7 @@
                     </glkView>
                     <connections>
                         <outlet property="FogSwitch" destination="kA3-YJ-dOG" id="SKc-04-fBS"/>
+                        <outlet property="controlSwitch" destination="NhY-HQ-ulL" id="gNR-vC-QRn"/>
                         <outlet property="dayNightSwitch" destination="hDq-up-qup" id="eS4-lV-tTi"/>
                         <outlet property="fogStyleSwitch" destination="oZb-SD-TuH" id="dEs-4H-YRF"/>
                         <outlet property="spotlightSwitch" destination="6mL-pg-bdh" id="hkN-E9-IFi"/>
@@ -113,6 +128,7 @@
                         <action selector="tap:" destination="V7m-aQ-9JQ" id="2tf-2q-r0G"/>
                     </connections>
                 </tapGestureRecognizer>
+                <pinchGestureRecognizer id="xMm-Mc-UBG"/>
             </objects>
             <point key="canvasLocation" x="160.80000000000001" y="97.601199400299862"/>
         </scene>
