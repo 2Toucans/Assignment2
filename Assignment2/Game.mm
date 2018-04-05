@@ -77,8 +77,6 @@ enum ModelType
     float rot = 0.001f * timeElapsed;
     [spinCube setPosition:GLKMatrix4Rotate(spinCube.position, rot, 0, 1, 0)];
     
-    [self moveHorse];
-    
     [collide update:timeElapsed];
     
     GLKVector2 horseMove = GLKVector2DivideScalar([collide getHorseMove], 100);
@@ -337,11 +335,6 @@ enum ModelType
     [Renderer addModel:horseModel texture:fileName];
     
     [collide addHorse:xPos y:yPos w:0.1 h:0.1];
-}
-
-- (void)moveHorse
-{
-    [collide pushHorse:-1.0f y:-1.0f];
 }
 
 - (Boolean)playerIsOnModelTile

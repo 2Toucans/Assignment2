@@ -51,7 +51,7 @@
 {
     //define body and set parameters
     b2BodyDef horseDef;
-    horseDef.type = b2_kinematicBody;
+    horseDef.type = b2_dynamicBody;
     horseDef.position.Set(xPos, yPos);
     
     horseBody = world->CreateBody(&horseDef);
@@ -105,7 +105,7 @@
 
 - (void)pushHorse:(float)xV y:(float)yV
 {
-    const b2Vec2 pushVec = b2Vec2(xV, yV);
+    const b2Vec2 pushVec = b2Vec2(xV/100, yV/100);
     
     world->SetGravity(pushVec);
 }
