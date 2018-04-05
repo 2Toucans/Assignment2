@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3D1E29E420589B3B007F70C0 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1E29E320589B3B007F70C0 /* Model.m */; };
+		3DDEF4A12075754B004C2B58 /* ModelReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DDEF4A02075754B004C2B58 /* ModelReader.m */; };
+		3DDEF4A42075A7BC004C2B58 /* Horse.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DDEF4A32075A7BB004C2B58 /* Horse.png */; };
 		9915794120575777006DAAD5 /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9915794020575777006DAAD5 /* Renderer.mm */; };
 		99249486205A2EB30015EEA7 /* EnvironmentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 99249485205A2EB30015EEA7 /* EnvironmentController.m */; };
 		9924948A205A41B30015EEA7 /* Shader2D.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 99249488205A41B30015EEA7 /* Shader2D.fsh */; };
@@ -39,6 +41,9 @@
 /* Begin PBXFileReference section */
 		3D1E29E320589B3B007F70C0 /* Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
 		3D91A22D2059AFCC0005BAB9 /* Light.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Light.h; sourceTree = "<group>"; };
+		3DDEF4A02075754B004C2B58 /* ModelReader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModelReader.m; sourceTree = "<group>"; };
+		3DDEF4A220757554004C2B58 /* ModelReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModelReader.h; sourceTree = "<group>"; };
+		3DDEF4A32075A7BB004C2B58 /* Horse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Horse.png; sourceTree = "<group>"; };
 		9915794020575777006DAAD5 /* Renderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Renderer.mm; sourceTree = "<group>"; };
 		9915794220575793006DAAD5 /* Renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
 		99249485205A2EB30015EEA7 /* EnvironmentController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnvironmentController.m; sourceTree = "<group>"; };
@@ -118,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				DB725ADC20757B830014B3B6 /* horse.obj */,
+				3DDEF4A32075A7BB004C2B58 /* Horse.png */,
 				DB725ADB20757B830014B3B6 /* Horse.tga */,
 				99EC9DB62058EE7D00894B9E /* GLESRenderer.cpp */,
 				99EC9DB52058EE7D00894B9E /* GLESRenderer.hpp */,
@@ -150,6 +156,8 @@
 				3D91A22D2059AFCC0005BAB9 /* Light.h */,
 				99249485205A2EB30015EEA7 /* EnvironmentController.m */,
 				99249487205A2EBE0015EEA7 /* EnvironmentController.h */,
+				3DDEF4A02075754B004C2B58 /* ModelReader.m */,
+				3DDEF4A220757554004C2B58 /* ModelReader.h */,
 				DB725AD8207545740014B3B6 /* Collisions.m */,
 				DB725ADA207549450014B3B6 /* Collisions.h */,
 			);
@@ -219,6 +227,7 @@
 				99EC9DBD2058EF2E00894B9E /* badcrate.png in Resources */,
 				DBFD7CD420474E5600A6E2C9 /* LaunchScreen.storyboard in Resources */,
 				DB130E032074178100C1B0A9 /* include in Resources */,
+				3DDEF4A42075A7BC004C2B58 /* Horse.png in Resources */,
 				DBFD7CD120474E5600A6E2C9 /* Assets.xcassets in Resources */,
 				99EC9DBB2058EE9000894B9E /* Shader.vsh in Resources */,
 				99249495205A48F80015EEA7 /* kching.jpg in Resources */,
@@ -243,6 +252,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBFD7CCC20474E5600A6E2C9 /* ViewController.m in Sources */,
+				3DDEF4A12075754B004C2B58 /* ModelReader.m in Sources */,
 				DBFD7CD720474E5600A6E2C9 /* main.m in Sources */,
 				9915794120575777006DAAD5 /* Renderer.mm in Sources */,
 				3D1E29E420589B3B007F70C0 /* Model.m in Sources */,
