@@ -40,17 +40,18 @@
     if(et-t > 0.0f)
         world->Step(et-t, 10, 10);
     
+    
     //find the change in horse position
     horseMove = GLKVector2Subtract(GLKVector2Make(horseBody->GetPosition().x, horseBody->GetPosition().y), pos);
     
-    //NSLog(@"horsemove=%1.2f, %1.2f", horseMove.x, horseMove.y);
+    NSLog(@"horsemove=%1.2f, %1.2f", horseMove.x, horseMove.y);
 }
 
 - (void)addHorse:(float)xPos y:(float)yPos w:(float)width h:(float)height
 {
     //define body and set parameters
     b2BodyDef horseDef;
-    horseDef.type = b2_dynamicBody;
+    horseDef.type = b2_kinematicBody;
     horseDef.position.Set(xPos, yPos);
     
     horseBody = world->CreateBody(&horseDef);
@@ -106,7 +107,7 @@
 {
     const b2Vec2 pushVec = b2Vec2(xV, yV);
     
-    horseBody->SetLinearVelocity(pushVec);
+    world->SetGravity(pushVec);
 }
 
 - (void)turnHorse:(float)rads
