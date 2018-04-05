@@ -110,7 +110,7 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
     // Set up the light uniforms
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(program);
-
+    
     for (int i = 0; i < [lights count]; i++) {
         Light* light;
         [lights[i] getValue:&light];
@@ -154,7 +154,7 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
             mvpMatrix = GLKMatrix4Multiply(GLKMatrix4Invert(cameraMatrix, FALSE), mvpMatrix);
             glUniformMatrix4fv(uniforms[UNIFORM_MV_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
             mvpMatrix = GLKMatrix4Multiply(perspectiveMatrix, mvpMatrix);
-
+            
             glUniformMatrix4fv(uniforms[UNIFORM_MVP_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
             glUniformMatrix3fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, normalMatrix.m);
             
@@ -178,12 +178,16 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
             glBufferData(GL_ARRAY_BUFFER, m.numIndices * sizeof(float) * 2, m.texCoords, GL_STATIC_DRAW);
             glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
             glEnableVertexAttribArray(3);
-
+            
             glUniformMatrix4fv(uniforms[UNIFORM_MVP_MATRIX], 1, FALSE, (const float *)mvpMatrix.m);
             
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, evbo);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, m.numIndices * sizeof(int), m.indices, GL_STATIC_DRAW);
             glDrawElements(GL_TRIANGLES, m.numIndices, GL_UNSIGNED_INT, 0);
+            
+            glDeleteBuffers(3, vbos);
+            glDeleteBuffers(1, &evbo);
+            glDeleteVertexArrays(1, &vao);
         }
     }];
     
@@ -306,3 +310,5 @@ GLKVector3 fogColor = GLKVector3Make(0.0, 0.0, 0.0);
 }
 
 @end
+
+
