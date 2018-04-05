@@ -8,6 +8,7 @@
 
 #ifndef Model_h
 #define Model_h
+#import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
 
 @interface Model : NSObject

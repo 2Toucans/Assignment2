@@ -46,6 +46,7 @@ enum ModelType
     Model* spinCube;
     Model* horseModel;
     GLESRenderer glesRenderer;
+    Collisions* collide;
 }
 
 - (id)init
@@ -56,10 +57,12 @@ enum ModelType
         rows = 4;
         cols = 4;
         
+        collide = [[Collisions alloc] init];
+        
         [self setModels];
         
         [self makeCube:0.5 y:0.5 z:0];
-        [self makeHorse:0.5 y:2.5 z:-0.48];
+        [self makeHorse:0.5 y:2 z:-0.48];
     }
     return self;
 }
@@ -71,8 +74,17 @@ enum ModelType
     lastTime = currentTime;
     
     //deal with spinning cube rotation
-    int rot = 0.001f * timeElapsed;
+    float rot = 0.001f * timeElapsed;
     [spinCube setPosition:GLKMatrix4Rotate(spinCube.position, rot, 0, 1, 0)];
+    
+    //[self moveHorse];
+    
+    [collide update:timeElapsed];
+    
+    GLKVector2 horseMove = GLKVector2DivideScalar([collide getHorseMove], 100);
+    
+    GLKMatrix4 moveM = GLKMatrix4Translate(GLKMatrix4Identity, horseMove.x, 0, horseMove.y);
+    [horseModel setPosition:GLKMatrix4Multiply(moveM, horseModel.position)];
 }
 
 - (void)move:(float)x y:(float)y
@@ -208,6 +220,7 @@ enum ModelType
     int* indices;
     
     model = [[Model alloc] init];
+    //type: 0 = vertWall, 1 = horizWall, 2 = tile, 3 = post, 4 = cube
     [model setNumIndices:(glesRenderer.GenCube(1.0f, &vertices, &normals, &texCoords, &indices, (int)type))];
     [model setVertices:vertices];
     [model setNormals:normals];
@@ -216,6 +229,32 @@ enum ModelType
     [model setPosition:GLKMatrix4Translate(GLKMatrix4Identity, xPos, zPos, yPos)];
     
     [Renderer addModel:model texture:fileName];
+    
+    float h, w;
+    
+    switch(type)
+    {
+        case vWall:
+            h = 0.05;
+            w = 0.4;
+            break;
+        case hWall:
+            h = 0.4;
+            w = 0.05;
+            break;
+        case tile:
+            return;
+        case post:
+            h = 0.1;
+            w = 0.1;
+            break;
+        case cube:
+            h = 0.2;
+            w = 0.2;
+            break;
+    }
+    
+    [collide addBody:xPos y:yPos w:w h:h];
 }
 
 //Determines which textures the wall should have based on surrounding
@@ -269,6 +308,8 @@ enum ModelType
     [spinCube setPosition:GLKMatrix4Translate(GLKMatrix4Identity, xPos, zPos, yPos)];
     
     [Renderer addModel:spinCube texture:fileName];
+    
+    [collide addBody:xPos y:yPos w:0.2 h:0.2];
 }
 
 //Makes the spinning cube and stores it
@@ -282,8 +323,12 @@ enum ModelType
 
     [Renderer addModel:horseModel texture:fileName];
     
-    //[collide addHorse:xPos y:yPos w:0.3 h:0.4];
+    [collide addHorse:xPos y:yPos w:0.1 h:0.1];
 }
 
+- (void)moveHorse
+{
+    [collide pushHorse:1.0f y:0.0f];
+}
 
 @end

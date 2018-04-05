@@ -8,6 +8,28 @@
 
 #ifndef Collisions_h
 #define Collisions_h
+#import <Foundation/Foundation.h>
+#include <GLKit/GLKit.h>
 
+@interface Collisions : NSObject
+{
+    
+}
+
+- (void)update:(float)et;
+
+- (void)addHorse:(float)xPos y:(float)yPos w:(float)width h:(float)height;
+
+- (void)addBody:(float)xPos y:(float)yPos w:(float)width h:(float)height;
+
+- (GLKVector2)getHorsePos;
+
+- (GLKVector2)getHorseMove;
+
+- (void)pushHorse:(float)xV y:(float)yV;
+
+- (void)turnHorse:(float)rads;
+
+@end
 
 #endif /* Collisions_h */
