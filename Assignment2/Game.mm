@@ -67,6 +67,8 @@ enum ModelType
         [self makeHorse:0.5 y:2 z:-0.48];
         
         gravity = GLKVector2Make(1, 1);
+        
+        lastTime = std::chrono::steady_clock::now();
     }
     return self;
 }
@@ -85,48 +87,40 @@ enum ModelType
     if(!control)
     {
         int turn = arc4random_uniform(100);
-        NSLog(@"x %1.2f y %1.2f", gravity.x, gravity.y);
+        
         if(turn < 5)
         {
             float h = sqrt(gravity.x * gravity.x + gravity.y * gravity.y);
-            NSLog(@"h %1.2f", h);
             float theta = atan(gravity.y/gravity.x);
-            NSLog(@"thetaI %1.2f", theta);
             theta += M_PI/12;
-            NSLog(@"thetaF %1.2f", theta);
             
             gravity.x = h*cos(theta);
             gravity.y = h*sin(theta);
-            
-            NSLog(@"x %1.2f y %1.2f", gravity.x, gravity.y);
             
             [collide pushHorse:gravity.x y:gravity.y];
         }
         else if(turn < 10)
         {
             float h = sqrt(gravity.x * gravity.x + gravity.y * gravity.y);
-            NSLog(@"h %1.2f", h);
             float theta = tan(gravity.y/gravity.x);
-            NSLog(@"thetaI %1.2f", theta);
             theta -= M_PI/12;
-            NSLog(@"thetaF %1.2f", theta);
             
             gravity.x = h*cos(theta);
             gravity.y = h*sin(theta);
-            
-            NSLog(@"x %1.2f y %1.2f", gravity.x, gravity.y);
             
             [collide pushHorse:gravity.x y:gravity.y];
         }
     }
     
     //deal with collisions
-    [collide update:timeElapsed];
+    [collide update:rot];
     
     //move horse based on gravity and collisions
-    GLKVector2 horseMove = GLKVector2DivideScalar([collide getHorseMove], 100);
+    GLKVector2 horseMove = [collide getHorseMove];
     GLKMatrix4 moveM = GLKMatrix4Translate(GLKMatrix4Identity, horseMove.x, 0, horseMove.y);
     [horseModel setPosition:GLKMatrix4Multiply(moveM, horseModel.position)];
+    
+    NSLog(@"x %1.2f y %1.2f", gravity.x, gravity.y);
 }
 
 - (void)move:(float)x y:(float)y
@@ -291,12 +285,12 @@ enum ModelType
     switch(type)
     {
         case vWall:
-            h = 0.05;
-            w = 0.4;
-            break;
-        case hWall:
             h = 0.4;
             w = 0.05;
+            break;
+        case hWall:
+            h = 0.05;
+            w = 0.4;
             break;
         case tile:
             return;
