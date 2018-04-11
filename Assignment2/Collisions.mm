@@ -30,12 +30,12 @@
     const float ts = 1.0f/60.0f;
     float t = 0;
     
-    while(t+ts <= ts)
+    while(t+ts <= et)
     {
         world->Step(ts, 10, 10);
         t += ts;
     }
-    //NSLog(@"horsepos=%1.2f, %1.2f", pos.x, pos.y);
+    NSLog(@"horsepos=%1.2f, %1.2f", pos.x, pos.y);
     
     if(et-t > 0.0f)
         world->Step(et-t, 10, 10);
@@ -43,6 +43,7 @@
     
     //find the change in horse position
     horseMove = GLKVector2Subtract(GLKVector2Make(horseBody->GetPosition().x, horseBody->GetPosition().y), pos);
+    NSLog(@"horsemove=%1.2f, %1.2f", horseMove.x, horseMove.y);
 }
 
 - (void)addHorse:(float)xPos y:(float)yPos w:(float)width h:(float)height
@@ -103,9 +104,10 @@
 
 - (void)pushHorse:(float)xV y:(float)yV
 {
-    const b2Vec2 pushVec = b2Vec2(xV/100, yV/100);
+    const b2Vec2 pushVec = b2Vec2(xV, yV);
     
-    world->SetGravity(pushVec);
+    horseBody->ApplyForceToCenter(pushVec, true);
+    //NSLog(@"grav x %1.2f y %1.2f", world->GetGravity().x, world->GetGravity().y);
 }
 
 - (void)turnHorse:(float)rads
@@ -115,7 +117,7 @@
 
 - (void)createWorld
 {
-    b2Vec2 gravity = b2Vec2(1.0f, 1.0f);
+    b2Vec2 gravity = b2Vec2(0.01f, 0.01f);
     
     world = (b2World*)malloc(sizeof(b2World));
     world = new b2World(gravity);
